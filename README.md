@@ -14,9 +14,9 @@ Skills should reference canonical policy in the sibling workspace checkout, for 
 
 ## Skills
 
-- `wrightkit-reclaim-entropy` — evidence-first simplification and entropy reclamation.
-- `wrightkit-rust-engineering-review` — structural Rust engineering review beyond compiler/mechanical checks.
-- `wrightkit-test-design-review` — test necessity, stability, duplication, fixture cost, and production-pollution review.
-- `wrightkit-verify-change` — independent falsification and evidence-lifecycle verification.
+- `wrightkit-reclaim-entropy`: evidence-first simplification and entropy reclamation.
+- `wrightkit-rust-engineering-review`: structural Rust engineering review beyond compiler and mechanical checks.
+- `wrightkit-test-design-review`: test necessity, stability, duplication, fixture cost, and production-pollution review.
+- `wrightkit-verify-change`: independent falsification and evidence-lifecycle verification.
 
 Keep skills focused on procedures. Stable organization policy belongs in `wrightkit/.github`; dynamic project state belongs in the owning repository, Issue, PR, or generated evidence.
