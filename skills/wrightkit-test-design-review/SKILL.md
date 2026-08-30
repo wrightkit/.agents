@@ -1,48 +1,76 @@
 ---
 name: wrightkit-test-design-review
-description: Review proposed or newly added WrightKit tests for contract value, stability, coverage duplication, fixture cost, and production pollution. Return keep, consolidate, rewrite, or delete with a concise rationale; use when deciding whether a code change needs a test or whether an agent-generated test should remain.
+description: Review whether a proposed or newly added WrightKit test protects a durable contract or distinct failure mode without unnecessary duplication, instability, fixture cost, or production coupling. Return keep, consolidate, rewrite, or delete.
 ---
 
 # WrightKit Test Design Review
 
-Use this skill to decide whether a test protects a meaningful contract, regression, or stable invariant. A code change does not automatically require a new test, and fewer tests is a valid result.
+Use this skill to decide whether a test is worth keeping and whether it protects the right surface. A code change does not automatically require a new test, and fewer tests can be the correct result.
 
-The authoritative rules are `.github/docs/testing-policy.md` and `.github/docs/engineering-quality.md` in the WrightKit workspace. Repository-local guidance may add stricter requirements. This skill reviews test design; it does not replace repository-specific conformance, corpus, or compatibility strategy.
+The authoritative rules are `.github/docs/testing-policy.md` and `.github/docs/engineering-quality.md`. Repository-local guidance may add stricter requirements. Do not restate those policies here.
 
-## Review procedure
+## Review principles
 
-Follow these checks in order:
+### A durable test needs a durable claim
 
-1. **State the claim.** Identify the behavior the test is meant to protect, its observable surface, and the independent contract, regression, or invariant that makes it worth preserving. If there is no durable claim, recommend `delete` or `rewrite`.
-2. **Find existing coverage.** Search focused unit, negative/error, property/invariant, integration, corpus, oracle, and end-to-end tests. Identify the nearest higher-level coverage and ask whether the proposed test detects a distinct failure mode. Do not recommend a new test before this check.
-3. **Choose the smallest useful layer.** Prefer this order of responsibility: real failure-class regression, public contract, representative user-facing integration, property/invariant, then isolated stable unit logic. Keep a lower-level test when it isolates a failure that higher layers cannot detect; otherwise consolidate toward the higher useful surface.
-4. **Check stability.** Prefer assertions about stable observable semantics and invariants that survive a correct internal rewrite. Treat current corpus/test counts, upstream membership or names, documentation prose, incidental formatting, private structure, helper call counts, and current enum/domain cardinality as dynamic or incidental unless an independent contract explicitly makes them observable.
-5. **Check coupling and cost.** Reject tests whose primary value is locking implementation details or duplicating higher-level behavior. Prefer minimal representative inputs inline. A fixture needs a reason to exist: it is shared, large, provenance-relevant, or owned by an established canonical corpus location.
-6. **Check production pollution.** A test should not normally require new `pub`/`pub(crate)` APIs, test-only hooks, configuration surfaces, visibility changes, or architectural indirection solely for test access. If observing internals needs production changes, first test an existing boundary or rewrite the test around the contract.
-7. **Return one decision.** Use exactly one of `keep`, `consolidate`, `rewrite`, or `delete`, with a rationale tied to the claim, existing coverage, and failure mode. Do not manufacture a test merely because code changed.
+Identify the observable behavior, regression, public contract, or stable invariant the test is meant to protect.
 
-## Decision meanings
+Why: without an independent claim, a test usually records the current implementation rather than constraining correctness.
 
-- `keep` — the test protects a stable contract or distinct failure mode and is not redundant or unnecessarily coupled.
-- `consolidate` — equivalent tests can be reduced or moved to the smallest useful higher-level surface without losing a distinct guard.
-- `rewrite` — the intent is valuable, but assertions, inputs, fixtures, or test surface should target the contract rather than mutable facts or internals.
-- `delete` — the test has no durable claim, only repeats existing coverage, or would shape production solely for test convenience.
+### Existing coverage changes the value of a new test
 
-## Output
+Look for the nearest focused, integration, property, corpus, oracle, or end-to-end coverage and ask whether the proposed test would detect a distinct plausible failure.
 
-Return a concise review in this form:
+Why: duplicated tests increase maintenance without necessarily increasing confidence.
+
+### Protect contracts, not implementation shape
+
+Prefer assertions about observable semantics, diagnostics, invariants, and externally meaningful results. Treat private structure, helper calls, incidental formatting, mutable inventories, and current counts as unstable unless a contract explicitly makes them observable.
+
+Why: a good regression test should survive a correct internal rewrite.
+
+### Use the smallest useful test surface
+
+Choose the layer that exposes the failure clearly without duplicating broader coverage. A lower-level test is useful when it isolates a failure that higher-level coverage would make hard to diagnose; a higher-level test is useful when the contract itself is user-facing or cross-component.
+
+Why: test value comes from the failure mode it protects, not from maximizing the number of layers that repeat the same behavior.
+
+### Include maintenance cost in the design
+
+Fixtures, snapshots, generated expectations, test-only APIs, and visibility changes all create obligations. Prefer small representative inputs and existing public or internal boundaries when they are sufficient.
+
+Why: a test that distorts production design or requires constant bookkeeping can cost more than the regression risk it protects.
+
+## Workflow
+
+Reason through these questions rather than treating them as a mandatory checklist:
+
+- What durable claim does this test protect?
+- What existing coverage already protects that claim?
+- What distinct incorrect implementation would this test catch?
+- Is the assertion stable across a correct internal rewrite?
+- Is this the smallest useful layer and input?
+- Does the test introduce disproportionate fixture or production-surface cost?
+
+If repository admission of a fixture, corpus case, snapshot, or verification artifact is part of the decision, route that question to `.github/docs/testing-policy.md` instead of inventing a local evidence policy.
+
+## Decision
+
+Return exactly one primary recommendation:
+
+- `keep` — protects a durable claim or distinct failure mode at an appropriate cost.
+- `consolidate` — valuable coverage exists, but equivalent tests can be combined or moved to a better surface.
+- `rewrite` — the intended claim is valuable, but the assertions, input, fixture, or test boundary targets unstable or incidental behavior.
+- `delete` — there is no durable claim, no distinct failure mode, or the test exists mainly to mirror the implementation.
+
+Use a concise rationale:
 
 ```text
 Recommendation: keep | consolidate | rewrite | delete
-Rationale: <why this decision follows from the protected behavior>
-Claim/contract: <observable behavior, regression, or stable invariant>
-Layer: <test layer and why it is the smallest useful one>
-Existing coverage: <relevant tests and any distinct failure mode>
-Stability/coupling: <stable assertion or dynamic/incidental dependency>
-Fixture cost: <inline input or justified canonical fixture>
-Production pollution: <none, or the test-only production change it would require>
+Claim: <observable behavior, regression, or invariant>
+Rationale: <why this test does or does not add durable protection>
+Existing coverage: <relevant overlap or distinct failure mode>
+Cost/coupling: <material fixture, stability, or production-surface concern, if any>
 ```
 
-## Evidence admission
-
-This skill does not define an evidence lifecycle, promote artifacts, or create ad-hoc evidence directories. Route fixture, snapshot, report, corpus, and other repository-admission questions to `.github/docs/testing-policy.md`, especially its verification-evidence lifecycle and repository-admission section. Apply that policy's admission criteria; keep single-task proof ephemeral unless the owning maintainer or QA role authorizes canonical integration.
+Do not manufacture a test merely because code changed.
