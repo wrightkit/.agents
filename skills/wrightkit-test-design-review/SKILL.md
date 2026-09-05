@@ -35,6 +35,12 @@ Choose the layer that exposes the failure clearly without duplicating broader co
 
 Why: test value comes from the failure mode it protects, not from maximizing the number of layers that repeat the same behavior.
 
+### Tests belong to features, not work items
+
+Before accepting a test, identify the stable feature that owns it, then identify the contract, invariant, regression, or failure mode it protects within that feature. Organize the test under that feature and behavior. Issue, pull-request, and task identifiers may be retained as provenance, but they must not define the test file, module, suite, case name, or directory.
+
+Why: issues are planning containers whose scope can be narrow or aggregate multiple capabilities; using them as test taxonomy makes coverage reflect project bookkeeping instead of the product contract.
+
 ### Include maintenance cost in the design
 
 Fixtures, snapshots, generated expectations, test-only APIs, and visibility changes all create obligations. Prefer small representative inputs and existing public or internal boundaries when they are sufficient.
@@ -45,7 +51,9 @@ Why: a test that distorts production design or requires constant bookkeeping can
 
 Reason through these questions rather than treating them as a mandatory checklist:
 
-- What durable claim does this test protect?
+- Which stable feature owns this test?
+- What contract, invariant, regression, or failure mode does it protect within that feature?
+- Is any Issue/PR/task identifier being used as taxonomy rather than provenance?
 - What existing coverage already protects that claim?
 - What distinct incorrect implementation would this test catch?
 - Is the assertion stable across a correct internal rewrite?
@@ -67,7 +75,8 @@ Use a concise rationale:
 
 ```text
 Recommendation: keep | consolidate | rewrite | delete
-Claim: <observable behavior, regression, or invariant>
+Feature: <stable owning feature>
+Claim: <observable behavior, regression, or invariant within that feature>
 Rationale: <why this test does or does not add durable protection>
 Existing coverage: <relevant overlap or distinct failure mode>
 Cost/coupling: <material fixture, stability, or production-surface concern, if any>
