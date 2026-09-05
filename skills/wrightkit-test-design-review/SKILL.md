@@ -35,6 +35,12 @@ Choose the layer that exposes the failure clearly without duplicating broader co
 
 Why: test value comes from the failure mode it protects, not from maximizing the number of layers that repeat the same behavior.
 
+### Tests belong to features, not work items
+
+Before accepting a test, identify the stable feature, contract, invariant, or regression class that owns it. Organize the test under that behavior. Issue, pull-request, and task identifiers may be retained as provenance, but they must not define the test file, module, suite, case name, or directory.
+
+Why: issues are planning containers whose scope can be narrow or aggregate multiple capabilities; using them as test taxonomy makes coverage reflect project bookkeeping instead of the product contract.
+
 ### Include maintenance cost in the design
 
 Fixtures, snapshots, generated expectations, test-only APIs, and visibility changes all create obligations. Prefer small representative inputs and existing public or internal boundaries when they are sufficient.
@@ -45,6 +51,8 @@ Why: a test that distorts production design or requires constant bookkeeping can
 
 Reason through these questions rather than treating them as a mandatory checklist:
 
+- Which stable feature, contract, invariant, or regression class owns this test?
+- Is any Issue/PR/task identifier being used as taxonomy rather than provenance?
 - What durable claim does this test protect?
 - What existing coverage already protects that claim?
 - What distinct incorrect implementation would this test catch?
