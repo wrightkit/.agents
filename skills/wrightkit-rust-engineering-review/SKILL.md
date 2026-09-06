@@ -1,6 +1,6 @@
 ---
 name: wrightkit-rust-engineering-review
-description: Review non-trivial WrightKit Rust changes when ownership, API, state, concurrency, or abstraction choices materially affect correctness or maintenance. Use for structural engineering judgment, not routine Rust edits or mechanical checks.
+description: Use when WrightKit Rust changes add or alter public APIs, dependencies, ownership or borrowing, shared state, Arc/Mutex/interior mutability, async/concurrency/lifecycle/error behavior, or non-trivial abstractions. Review structural correctness and maintenance risk; do not use for routine mechanical Rust edits.
 ---
 
 # WrightKit Rust Engineering Review
