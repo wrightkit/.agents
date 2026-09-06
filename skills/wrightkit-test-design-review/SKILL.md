@@ -1,11 +1,11 @@
 ---
 name: wrightkit-test-design-review
-description: Review whether a proposed or newly added WrightKit test protects a durable contract or distinct failure mode without unnecessary duplication, instability, fixture cost, or production coupling. Return keep, consolidate, rewrite, or delete.
+description: Use whenever a WrightKit change adds, removes, rewrites, fixes, or updates tests, assertions, expected values, snapshots, fixtures, corpus expectations, or support states. Especially relevant for dependency/version bumps, changed version/count/date/SHA/member-list literals, tests edited to restore green CI, duplicated coverage, or test-only production surface. Return keep, consolidate, rewrite, or delete.
 ---
 
 # WrightKit Test Design Review
 
-Use this skill to decide whether a test is worth keeping and whether it protects the right surface. A code change does not automatically require a new test, and fewer tests can be the correct result.
+Use this skill whenever a change touches a durable test surface and decide whether the affected coverage protects the right claim. A code change does not automatically require a new test, and an existing expectation does not automatically deserve to be updated or retained.
 
 The authoritative rules are `.github/docs/testing-policy.md` and `.github/docs/engineering-quality.md`. Repository-local guidance may add stricter requirements. Do not restate those policies here.
 
