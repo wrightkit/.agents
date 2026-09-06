@@ -12,6 +12,14 @@ It is intended to be checked out as `~/Repos/wrightkit/.agents` when agents are 
 
 Skills should reference canonical policy in the sibling workspace checkout, for example `.github/docs/testing-policy.md`, rather than copying policy text into this repository.
 
+## Skill activation
+
+Skill descriptions are discovery metadata, not short summaries of the body. Write each `description` so an agent can recognize when to load the skill before the full `SKILL.md` is available.
+
+Front-load the task surfaces, changed artifacts, and failure signals that should activate the skill. Cover important indirect contexts as well as explicit requests: for example, a dependency bump that changes test expectations belongs in the test-design activation surface even when the task was not described as test work. Prefer semantic trigger vocabulary over exhaustive keyword lists or custom routing metadata.
+
+Before merging a new or materially changed skill, exercise its description against representative trigger and non-trigger prompts. Adjust the metadata when a normal relevant prompt would likely miss the skill, or when unrelated routine work would activate it too broadly. Keep the procedure and authoritative policy in their owning documents rather than duplicating them in the description.
+
 ## Skills
 
 - `wrightkit-reclaim-entropy`: evidence-first simplification and entropy reclamation.
