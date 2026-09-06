@@ -1,6 +1,6 @@
 ---
 name: wrightkit-reclaim-entropy
-description: Find and safely remove accidental WrightKit maintenance surface by tracing real consumers, contracts, ownership, and lifecycle evidence. Use for focused simplification, dead or redundant abstractions, duplicate truth, obsolete fallbacks, or post-migration cleanup.
+description: Use when WrightKit code, docs, config, or workflows contain duplicate truth, dead or redundant abstractions, obsolete fallbacks or compatibility layers, post-migration leftovers, unused consumers, duplicated state/config, or cleanup after replacement. Trace real consumers, contracts, ownership, and lifecycle evidence before removing anything.
 ---
 
 # WrightKit Reclaim Entropy
