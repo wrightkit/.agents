@@ -1,6 +1,6 @@
 ---
 name: wrightkit-verify-change
-description: Independently verify a material WrightKit change against an external or accepted contract using a falsifiable claim and decisive evidence. Return VERIFIED, NOT VERIFIED, or INCONCLUSIVE.
+description: Use when a material WrightKit semantic, compatibility, parser/compiler, source-edit, protocol, support-state, or real-project change is being accepted or declared complete. Especially relevant when expected behavior changed, tests were authored with the implementation, a regression escaped coverage, or cross-repository evidence needs independent falsification. Return VERIFIED, NOT VERIFIED, or INCONCLUSIVE.
 ---
 
 # WrightKit Verify Change
