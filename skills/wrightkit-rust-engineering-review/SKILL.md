@@ -1,17 +1,17 @@
 ---
 name: wrightkit-rust-engineering-review
-description: Use when WrightKit Rust changes add or alter public APIs, dependencies, ownership/borrowing, shared state, async/concurrency/lifecycle/error behavior, non-trivial abstractions, semantic placement, feature locality, mixed module responsibilities, parser/lowerer/compiler/checker growth, or metadata/registry fields that drive program behavior. Review structural correctness and maintenance risk; do not use for routine mechanical Rust edits.
+description: Use when WrightKit Rust changes add or alter public APIs, replace or migrate public/canonical boundaries (API, model, IR, protocol), introduce or update dependencies, ownership/borrowing, shared state, async/concurrency/lifecycle/error behavior, non-trivial abstractions, semantic placement, feature locality, mixed module responsibilities, parser/lowerer/compiler/checker growth, or metadata/registry fields that drive program behavior. Review structural correctness and maintenance risk; do not use for routine mechanical Rust edits.
 ---
 
 # WrightKit Rust Engineering Review
 
-Use this skill when a Rust change has a real structural risk: ownership or shared state, a public API or dependency boundary, non-trivial error/lifecycle behavior, concurrency, an abstraction whose cost may exceed the problem it solves, or a placement decision that can make domain behavior harder to find and maintain.
+Use this skill when a Rust change has a real structural risk: ownership or shared state, a public API or dependency boundary, a public or canonical boundary migration, non-trivial error/lifecycle behavior, concurrency, an abstraction whose cost may exceed the problem it solves, or a placement decision that can make domain behavior harder to find and maintain.
 
 Relevant placement signals include adding semantic policy to an already mixed parser/lowerer/compiler/checker, spreading one feature across unrelated phases, growing generic registries or metadata into behavior interpreters, or extending a large implementation unit simply because adjacent code already lives there.
 
 Do not load it merely because Rust changed. Compiler, formatting, Clippy, ordinary repository tests, small mechanical edits, and file size by themselves are not reasons to perform a structural review.
 
-Read the nearest `AGENTS.md`, the linked issue, and relevant current repository contracts first. Establish current implementation reality separately; an ADR is decision history, not proof that the repository still matches it. Organization-wide engineering principles live in `.github/docs/engineering-quality.md`; do not duplicate or replace them here.
+Read the nearest `AGENTS.md`, the linked issue, and relevant current repository contracts first. Establish current implementation reality separately; an ADR is decision history, not proof that the repository still matches it. Organization-wide engineering principles live in `.github/docs/engineering-quality.md`, and boundary contract continuity rules live in `.github/docs/issue-readiness-and-pr-audit.md`; do not duplicate or replace them here.
 
 ## Review principles
 
@@ -63,7 +63,9 @@ Why: abstraction can reduce complexity, but speculative generality usually moves
 
 A new public API, crate feature, dependency, protocol-facing type, or externally visible error shape creates maintenance work beyond the current implementation. Check that the current issue or existing architecture actually requires that obligation.
 
-Why: local code can be changed cheaply; consumers and public contracts constrain future changes.
+When replacing, hiding, or retiring a public or canonical boundary (such as an API, model, IR, or protocol), verify contract continuity per `.github/docs/issue-readiness-and-pr-audit.md`: surviving accepted capabilities must be accounted for on the replacement boundary rather than orphaned in compatibility or internal paths, and removals or ownership transfers must have approved contract backing.
+
+Why: local code can be changed cheaply; consumers and public contracts constrain future changes. Boundary migrations carry the special risk that a replacement boundary looks complete while silently shedding surviving capabilities.
 
 ## Workflow
 
@@ -73,7 +75,7 @@ Trace only the parts needed to judge the material risk:
 2. Inspect the current implementation location and the minimum callers/consumers needed to understand its responsibility.
 3. Ask whether the proposed placement makes the domain behavior easier to locate and reason about, or deepens an already mixed responsibility.
 4. If metadata/registry/schema changes drive behavior, identify whether they represent declarative facts or a new semantic interpreter layer.
-5. Trace ownership, state, lifecycle, API, dependency, and abstraction costs when those are material to the change.
+5. Trace ownership, state, lifecycle, API, dependency, and abstraction costs when those are material to the change. For boundary migrations, confirm that surviving accepted capabilities are represented on the replacement boundary instead of lingering only in compatibility adapters.
 6. Compare against the simplest viable design that satisfies the same contract while keeping the changed behavior coherent.
 7. Report only actionable problems in the current scope.
 
@@ -86,7 +88,7 @@ If this is being used as a PR review, follow `.github/docs/issue-readiness-and-p
 For a focused engineering investigation, state:
 
 ```text
-Concern: <concrete placement/ownership/API/state/abstraction problem>
+Concern: <concrete placement/ownership/API/boundary-contract/state/abstraction problem>
 Evidence: <domain contract, current implementation, caller, consumer, lifecycle, or failure evidence>
 Impact: <correctness, discoverability, or maintenance consequence>
 Required change: <smallest correction, bounded extraction, or owner/decision that must resolve it>
