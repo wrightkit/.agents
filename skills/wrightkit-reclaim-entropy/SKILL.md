@@ -1,6 +1,15 @@
 ---
 name: wrightkit-reclaim-entropy
-description: Use when WrightKit code, docs, config, or workflows contain duplicate truth, dead or redundant abstractions, obsolete fallbacks or compatibility layers, post-migration leftovers, unused consumers, duplicated state/config, or cleanup after replacement. Trace real consumers, contracts, ownership, and lifecycle evidence before removing anything.
+description: >
+  Evidence-first WrightKit simplification: find or remove duplicate truth, dead
+  or redundant abstractions, obsolete fallbacks or compatibility layers,
+  post-migration leftovers, unused consumers, duplicated state/config, or
+  replacement cleanup. Use for repo/codebase cleanup, entropy audits, migration
+  cleanup, or focused "is this still load-bearing?" investigations. Also use
+  when the user asks what can be deleted or simplified, to remove leftovers,
+  find bloat or duplicate truth, or clean up after a replacement. Do NOT use for
+  routine feature implementation, correctness-only PR review, or self-authorizing
+  removal of public or compatibility contracts.
 ---
 
 # WrightKit Reclaim Entropy
