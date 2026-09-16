@@ -14,11 +14,30 @@ Skills should reference canonical policy in the sibling workspace checkout, for 
 
 ## Skill activation
 
-Skill descriptions are discovery metadata, not short summaries of the body. Write each `description` so an agent can recognize when to load the skill before the full `SKILL.md` is available.
+Skill descriptions are discovery metadata, not short summaries of the body. Treat each `description` as the activation contract an agent sees before the full `SKILL.md` is available.
 
-Front-load the task surfaces, changed artifacts, and failure signals that should activate the skill. Cover important indirect contexts as well as explicit requests: for example, a dependency bump that changes test expectations belongs in the test-design activation surface even when the task was not described as test work. Prefer semantic trigger vocabulary over exhaustive keyword lists or custom routing metadata.
+A strong description normally answers four things in this order:
 
-Before merging a new or materially changed skill, exercise its description against representative trigger and non-trigger prompts. Adjust the metadata when a normal relevant prompt would likely miss the skill, or when unrelated routine work would activate it too broadly. Keep the procedure and authoritative policy in their owning documents rather than duplicating them in the description.
+1. **What** — the job or outcome the skill provides.
+2. **Use when** — semantic task surfaces, changed artifacts, risks, or failure signals that should activate it.
+3. **Also use when** — representative user wording or indirect situations that should still route here.
+4. **Do NOT use** — adjacent tasks that look similar but belong to another skill, normal repository workflow, or no skill at all.
+
+Representative phrases are examples, not an exhaustive keyword router. Front-load semantic triggers, then add a few natural-language aliases when users are likely to describe the same need differently. State mode or scope boundaries when they materially affect activation, such as diff review versus whole-repository audit, read-only investigation versus apply mode, or test design versus independent verification.
+
+Cover important indirect contexts as well as explicit requests: for example, a dependency bump that changes test expectations belongs in the test-design activation surface even when the task was not described as test work. Avoid descriptions made mostly of internal architecture vocabulary when a normal user prompt would use simpler language.
+
+Before merging a new or materially changed skill, exercise its description against representative natural trigger prompts, indirect trigger prompts, and neighboring non-trigger prompts. If two skills activate on the same ordinary prompt for different reasons, clarify their scope boundary instead of relying on ordering or hidden precedence. Keep procedure and authoritative policy in their owning documents rather than duplicating them in the description.
+
+A useful shape is:
+
+```yaml
+description: >
+  <job or outcome>.
+  Use when <semantic task/risk/artifact triggers>.
+  Also use when <representative user wording or indirect signals>.
+  Do NOT use for <adjacent non-triggers or another skill's scope>.
+```
 
 ## Skills
 
