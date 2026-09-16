@@ -1,6 +1,17 @@
 ---
 name: wrightkit-rust-engineering-review
-description: Use when WrightKit Rust changes add or alter public APIs, replace or migrate public/canonical boundaries (API, model, IR, protocol), introduce or update dependencies, ownership/borrowing, shared state, async/concurrency/lifecycle/error behavior, non-trivial abstractions, semantic placement, feature locality, mixed module responsibilities, parser/lowerer/compiler/checker growth, or metadata/registry fields that drive program behavior. Review structural correctness and maintenance risk; do not use for routine mechanical Rust edits.
+description: >
+  Structural review for substantive WrightKit Rust design or implementation.
+  Use when Rust changes add or alter public/canonical APIs, models, IRs,
+  protocols, dependencies, ownership/borrowing, Arc/Mutex/interior mutability,
+  async/concurrency/lifecycle/error behavior, non-trivial abstractions, semantic
+  placement, feature locality, mixed module responsibilities,
+  parser/lowerer/compiler/checker growth, or behavior-driving metadata and
+  registries. Also use when the user asks for a Rust engineering/design review,
+  whether a Rust change is over-engineered or idiomatic, or whether code lives
+  in the right owner/module. Do NOT use for fmt/Clippy/compiler-only fixes,
+  routine mechanical edits, or broad repo cleanup outside the changed
+  responsibility.
 ---
 
 # WrightKit Rust Engineering Review
