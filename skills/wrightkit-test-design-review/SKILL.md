@@ -1,6 +1,17 @@
 ---
 name: wrightkit-test-design-review
-description: Use whenever a WrightKit change adds, removes, rewrites, fixes, or updates tests, assertions, expected values, snapshots, fixtures, corpus expectations, or support states. Especially relevant for dependency/version bumps, changed version/count/date/SHA/member-list literals, tests edited to restore green CI, duplicated coverage, or test-only production surface. Return keep, consolidate, rewrite, or delete.
+description: >
+  Review whether WrightKit tests protect durable behavior instead of mirroring
+  current implementation. Use whenever a change adds, removes, rewrites, fixes,
+  or updates tests, assertions, expected values, snapshots, fixtures, corpus
+  expectations, support states, or test-only production surface. Also use for
+  dependency/version bumps that change expectations, hard-coded
+  version/count/date/SHA/member-list literals, tests edited just to restore green
+  CI, duplicated coverage, or when the user asks "do we need this test?", "is
+  this test hard-coded or brittle?", or "why didn't tests catch this?" Do NOT
+  use merely to run an unchanged test suite or as independent acceptance
+  verification when test design itself is not under review. Return keep,
+  consolidate, rewrite, or delete.
 ---
 
 # WrightKit Test Design Review
