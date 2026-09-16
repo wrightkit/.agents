@@ -7,12 +7,13 @@ description: >
   real-project changes, and when replacing, migrating, or retiring a public or
   canonical API, model, IR, protocol, or boundary. Also use when the user asks
   to verify or prove a change, asks whether a fix is really complete or ready to
-  merge, a regression escaped coverage, tests were authored with the
-  implementation, surviving contract continuity must be checked, or
-  cross-repository evidence needs independent falsification. Do NOT use as a
-  routine test runner, for mechanical changes whose correctness is fully covered
-  by normal gates, or to decide whether a test should exist. Return VERIFIED,
-  NOT VERIFIED, or INCONCLUSIVE.
+  merge, a regression fix needs independent re-checking after escaping coverage,
+  tests were authored with the implementation, surviving contract continuity
+  must be checked, or cross-repository evidence needs independent falsification.
+  Do NOT use as a routine test runner, to diagnose why coverage missed a defect,
+  for mechanical changes whose correctness is fully covered by normal gates, or
+  to decide whether a test should exist. Return VERIFIED, NOT VERIFIED, or
+  INCONCLUSIVE.
 ---
 
 # WrightKit Verify Change
