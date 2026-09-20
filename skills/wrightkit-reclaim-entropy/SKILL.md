@@ -1,7 +1,7 @@
 ---
 name: wrightkit-reclaim-entropy
 description: >
-  Evidence-first WrightKit simplification: find or remove duplicate truth, dead
+  WrightKit simplification: find or remove duplicate truth, dead
   or redundant abstractions, obsolete fallbacks or compatibility layers,
   post-migration leftovers, unused consumers, duplicated state/config, or
   replacement cleanup. Use for repo/codebase cleanup, entropy audits, migration
@@ -20,7 +20,7 @@ The authoritative policies are `.github/docs/entropy-policy.md`, `.github/docs/e
 
 Core principle:
 
-> Scanners create candidates; evidence justifies a cut.
+> Scanners create candidates; consumer inspection and contract checks justify a cut.
 
 Why: unused-looking code can still encode an external contract, dynamic path, compatibility boundary, or lifecycle requirement. Conversely, code can be reachable and still be accidental duplication.
 
@@ -48,7 +48,7 @@ Why: deleting lines is not useful if the same obligation simply moves elsewhere.
 
 Trace callers and consumers far enough to understand whether the surface is production, test-only, generated, dynamic, cross-repository, or external. Search strings, protocol/config keys, build/codegen paths, registries, and known downstream WrightKit consumers when relevant.
 
-Why: local reference counts are incomplete evidence in a multi-repository ecosystem.
+Why: local reference counts are incomplete on their own in a multi-repository ecosystem.
 
 ### What makes it load-bearing?
 
@@ -88,7 +88,9 @@ Prefer a few well-supported candidates over a cleanup wishlist.
 
 ```text
 Candidate: <maintenance obligation>
-Evidence: <consumers, ownership, contract, lifecycle, or history>
+Consumers: <production callers, dynamic/external entrypoints, or cross-repository consumers>
+Contract: <public or compatibility contract, ownership decision, or related history>
+Current reality: <lifecycle state or observed behavior>
 Change: <what can be removed or consolidated>
 Net effect: <maintenance concepts removed and any replacement cost>
 Tradeoff: <capability or flexibility lost, if any>

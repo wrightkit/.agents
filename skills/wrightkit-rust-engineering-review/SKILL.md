@@ -30,7 +30,7 @@ Read the nearest `AGENTS.md`, the linked issue, and relevant current repository 
 
 Understand what behavior, state, identity, lifecycle, failure, or consumer relationship the code must represent before judging the Rust technique or file in which it is implemented.
 
-Ask where a maintainer looking for this domain behavior would reasonably expect to find it. Existing placement is evidence about current code, not proof that it is the correct owning responsibility for new behavior.
+Ask where a maintainer looking for this domain behavior would reasonably expect to find it. Existing placement describes current code, but does not prove that it is the correct owning responsibility for new behavior.
 
 Why: a sophisticated implementation may be justified by a difficult domain, while a familiar-looking implementation can still encode the wrong ownership or bury a feature inside infrastructure that does not conceptually own it.
 
@@ -68,7 +68,7 @@ Why: ownership machinery is part of the design. Extra state-sharing mechanisms c
 
 Traits, generics, adapters, managers, contexts, helpers, feature flags, and dependencies should correspond to a real stable boundary or repeated behavior whose common shape is understood.
 
-Why: abstraction can reduce complexity, but speculative generality usually moves complexity into APIs and type relationships before there is evidence they are needed.
+Why: abstraction can reduce complexity, but speculative generality usually moves complexity into APIs and type relationships before a demonstrated need exists.
 
 ### Treat public surface and dependencies as obligations
 
@@ -100,7 +100,9 @@ For a focused engineering investigation, state:
 
 ```text
 Concern: <concrete placement/ownership/API/boundary-contract/state/abstraction problem>
-Evidence: <domain contract, current implementation, caller, consumer, lifecycle, or failure evidence>
+Contract: <domain contract, public boundary, or owner decision>
+Current reality: <current implementation, lifecycle, observed failure, or relevant state>
+Consumers: <caller, production consumer, or downstream integration>
 Impact: <correctness, discoverability, or maintenance consequence>
 Required change: <smallest correction, bounded extraction, or owner/decision that must resolve it>
 ```
