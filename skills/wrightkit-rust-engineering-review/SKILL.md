@@ -101,7 +101,8 @@ For a focused engineering investigation, state:
 ```text
 Concern: <concrete placement/ownership/API/boundary-contract/state/abstraction problem>
 Contract: <domain contract, public boundary, or owner decision>
-Consumers: <current implementation, caller, consumer, lifecycle, or observed failure>
+Current reality: <current implementation, lifecycle, observed failure, or relevant state>
+Consumers: <caller, production consumer, or downstream integration>
 Impact: <correctness, discoverability, or maintenance consequence>
 Required change: <smallest correction, bounded extraction, or owner/decision that must resolve it>
 ```

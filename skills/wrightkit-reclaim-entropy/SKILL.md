@@ -88,7 +88,9 @@ Prefer a few well-supported candidates over a cleanup wishlist.
 
 ```text
 Candidate: <maintenance obligation>
-Consumers: <callers, ownership, contract, lifecycle, or related history>
+Consumers: <production callers, dynamic/external entrypoints, or cross-repository consumers>
+Contract: <public or compatibility contract, ownership decision, or related history>
+Current reality: <lifecycle state or observed behavior>
 Change: <what can be removed or consolidated>
 Net effect: <maintenance concepts removed and any replacement cost>
 Tradeoff: <capability or flexibility lost, if any>
