@@ -11,9 +11,9 @@ description: >
   tests were authored with the implementation, surviving contract continuity
   must be checked, or cross-repository behavior needs independent falsification.
   Do NOT use as a routine test runner, to diagnose why coverage missed a defect,
-  for mechanical changes whose correctness is fully covered by normal gates, or
-  to decide whether a test should exist. Return VERIFIED, NOT VERIFIED, or
-  INCONCLUSIVE.
+  for mechanical changes whose correctness is fully covered by normal gates, to
+  approve a proposed design before implementation, or to decide whether a test
+  should exist. Return VERIFIED, NOT VERIFIED, or INCONCLUSIVE.
 ---
 
 # WrightKit Verify Change
@@ -21,6 +21,12 @@ description: >
 Use this skill when acceptance of a material semantic, compatibility, parser, compiler, source-edit, protocol, or similar change needs independent falsification rather than only rerunning tests authored with the implementation, or when verifying contract continuity across a public or canonical boundary migration, replacement, or retirement.
 
 The authoritative tests-first rules are in `.github/docs/testing-policy.md`, and the canonical contract continuity policy for boundary migrations is in `.github/docs/issue-readiness-and-pr-audit.md`. Repository-local guidance may add stricter constraints. This skill defines an independent verification procedure, not a second testing policy.
+
+This is a post-implementation check. It does not decide whether a material
+persistent mechanism should have been admitted before coding; that design-
+admission question belongs to `.github/docs/engineering-quality.md` and the
+relevant design-review skill. Once an implementation exists, ablation asks
+whether its changed behavior is load-bearing and independently exercised.
 
 ## Principle
 
@@ -61,7 +67,7 @@ For boundary migrations, require a decisive check that exercises the replacement
 
 Why: the purpose is to test the claim, not to maximize command coverage. Broader suites remain supporting gates.
 
-### 4. Ablate the changed behavior
+### 4. Ablate the changed behavior after implementation
 
 For a substantive implementation change, temporarily disable or simplify its key new behavior in a throwaway patch or worktree, then rerun the decisive check. The check should fail or expose the original defect; if it does not, the check may not exercise the changed behavior.
 

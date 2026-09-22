@@ -8,13 +8,18 @@ description: >
   cleanup, or focused "is this still load-bearing?" investigations. Also use
   when the user asks what can be deleted or simplified, to remove leftovers,
   find bloat or duplicate truth, or clean up after a replacement. Do NOT use for
-  routine feature implementation, correctness-only PR review, or self-authorizing
-  removal of public or compatibility contracts.
+  routine feature implementation, correctness-only PR review, self-authorizing
+  removal of public or compatibility contracts, or to approve a new mechanism
+  before implementation.
 ---
 
 # WrightKit Reclaim Entropy
 
 Use this skill to reduce maintenance obligations without treating line count as the objective.
+
+This is post-hoc simplification and cleanup. It is not the primary design-
+admission check for a proposed mechanism; use the organization engineering
+policy and the relevant design-review skill before implementation instead.
 
 The authoritative policies are `.github/docs/entropy-policy.md`, `.github/docs/engineering-quality.md`, and `.github/docs/testing-policy.md`. Repository-local contracts take precedence. This skill provides a reusable investigation workflow; it does not redefine public API, compatibility, licensing, or testing policy.
 
@@ -100,4 +105,4 @@ Verify: <smallest decisive check>
 
 Finding no safe or worthwhile cut is a valid result.
 
-When used during PR review, follow `.github/docs/issue-readiness-and-pr-audit.md`: do not expand the approved PR into an entropy cleanup unless the issue itself includes that work.
+When used during PR review, follow `.github/docs/issue-readiness-and-pr-audit.md`: do not expand the approved PR into an entropy cleanup unless the issue itself includes that work. Do not use accumulated cleanup as a substitute for deciding whether a new mechanism should be admitted before implementation.
