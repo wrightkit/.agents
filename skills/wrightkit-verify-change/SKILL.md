@@ -22,11 +22,10 @@ Use this skill when acceptance of a material semantic, compatibility, parser, co
 
 The authoritative tests-first rules are in `.github/docs/testing-policy.md`, and the canonical contract continuity policy for boundary migrations is in `.github/docs/issue-readiness-and-pr-audit.md`. Repository-local guidance may add stricter constraints. This skill defines an independent verification procedure, not a second testing policy.
 
-This is a post-implementation check. It does not decide whether a material
-persistent mechanism should have been admitted before coding; that design-
-admission question belongs to `.github/docs/engineering-quality.md` and the
-relevant design-review skill. Once an implementation exists, ablation asks
-whether its changed behavior is load-bearing and independently exercised.
+This is a post-implementation correctness check. It does not decide whether a
+material persistent mechanism should have been admitted; that design-admission
+and simplification review belongs to `.github/docs/engineering-quality.md` and
+the relevant design-review skill.
 
 ## Principle
 
@@ -67,13 +66,7 @@ For boundary migrations, require a decisive check that exercises the replacement
 
 Why: the purpose is to test the claim, not to maximize command coverage. Broader suites remain supporting gates.
 
-### 4. Ablate the changed behavior after implementation
-
-For a substantive implementation change, temporarily disable or simplify its key new behavior in a throwaway patch or worktree, then rerun the decisive check. The check should fail or expose the original defect; if it does not, the check may not exercise the changed behavior.
-
-Keep the ablation temporary and do not add production hooks solely to support it.
-
-### 5. Compare behavior
+### 4. Compare behavior
 
 Where meaningful, compare pre-change and post-change behavior under equivalent conditions. More importantly, compare the resulting behavior with the independent authority.
 
@@ -83,7 +76,7 @@ A check that exercises only a retired, private, hidden, or compatibility-only bo
 
 A missing historical baseline does not automatically invalidate verification if the current contract can still be tested decisively; record the limitation when it matters.
 
-### 6. Return a verdict
+### 5. Return a verdict
 
 Use exactly one:
 
