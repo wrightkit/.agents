@@ -1,17 +1,18 @@
 ---
 name: wrightkit-rust-engineering-review
 description: >
-  Structural review for substantive WrightKit Rust design or implementation.
+  Structural review for substantive WrightKit Rust design or implementation,
+  evaluating design admission against direct alternatives before Rust shape.
   Use when Rust changes add or alter public/canonical APIs, models, IRs,
   protocols, dependencies, ownership/borrowing, Arc/Mutex/interior mutability,
   async/concurrency/lifecycle/error behavior, non-trivial abstractions, semantic
   placement, feature locality, mixed module responsibilities,
   parser/lowerer/compiler/checker growth, or behavior-driving metadata and
   registries. Also use when the user asks for a Rust engineering/design review,
-  whether a Rust change is over-engineered or idiomatic, or whether code lives
-  in the right owner/module. Do NOT use for fmt/Clippy/compiler-only fixes,
-  routine mechanical edits, or broad repo cleanup outside the changed
-  responsibility.
+  whether a proposed mechanism is necessary or over-engineered, whether code is
+  idiomatic, or whether code lives in the right owner/module. Do NOT use for
+  fmt/Clippy/compiler-only fixes, routine mechanical edits, or broad repo
+  cleanup outside the changed responsibility.
 ---
 
 # WrightKit Rust Engineering Review
@@ -23,6 +24,23 @@ Relevant placement signals include adding semantic policy to an already mixed pa
 Do not load it merely because Rust changed. Compiler, formatting, Clippy, ordinary repository tests, small mechanical edits, and file size by themselves are not reasons to perform a structural review.
 
 Read the nearest `AGENTS.md`, the linked issue, and relevant current repository contracts first. Establish current implementation reality separately; an ADR is decision history, not proof that the repository still matches it. Organization-wide engineering principles live in `.github/docs/engineering-quality.md`, and boundary contract continuity rules live in `.github/docs/issue-readiness-and-pr-audit.md`; do not duplicate or replace them here.
+
+For a proposed material abstraction, dependency, public surface, ownership or
+state machinery, lifecycle or concurrency mechanism, behavior-driving metadata,
+or other persistent structural mechanism, begin with design admission rather
+than its Rust shape:
+
+1. State the concrete current requirement or contract it serves.
+2. Identify the direct or existing implementation path that avoids it.
+3. Attempt removal, deferral, inlining, or reuse of existing machinery.
+4. Keep the mechanism only when the simpler path fails a current contract,
+   invariant, ownership boundary, measurable constraint, or known workflow, or
+   creates a demonstrably higher total maintenance obligation.
+
+This is a lightweight admission check for substantive mechanisms, not a
+standalone ceremony for routine local or mechanical edits. The authoritative
+rule remains `.github/docs/engineering-quality.md`; do not restate its full
+policy here.
 
 ## Review principles
 
@@ -83,12 +101,17 @@ Why: local code can be changed cheaply; consumers and public contracts constrain
 Trace only the parts needed to judge the material risk:
 
 1. Establish the approved behavior, current contract, and owning domain.
-2. Inspect the current implementation location and the minimum callers/consumers needed to understand its responsibility.
-3. Ask whether the proposed placement makes the domain behavior easier to locate and reason about, or deepens an already mixed responsibility.
-4. If metadata/registry/schema changes drive behavior, identify whether they represent declarative facts or a new semantic interpreter layer.
-5. Trace ownership, state, lifecycle, API, dependency, and abstraction costs when those are material to the change. For boundary migrations, confirm that surviving accepted capabilities are represented on the replacement boundary instead of lingering only in compatibility adapters.
-6. Compare against the simplest viable design that satisfies the same contract while keeping the changed behavior coherent.
-7. Report only actionable problems in the current scope.
+2. For each proposed material persistent mechanism, perform the direct/existing
+   alternative and removal, deferral, inlining, or reuse challenge above. If
+   the admission case is unresolved, stop before reviewing implementation
+   technique and route the decision through the organization policy and the
+   appropriate owner.
+3. Inspect the current implementation location and the minimum callers/consumers needed to understand its responsibility.
+4. Ask whether the proposed placement makes the domain behavior easier to locate and reason about, or deepens an already mixed responsibility.
+5. If metadata/registry/schema changes drive behavior, identify whether they represent declarative facts or a new semantic interpreter layer.
+6. Trace ownership, state, lifecycle, API, dependency, and abstraction costs when those are material to the change. For boundary migrations, confirm that surviving accepted capabilities are represented on the replacement boundary instead of lingering only in compatibility adapters.
+7. Compare the surviving design against the simplest viable design that satisfies the same contract while keeping the changed behavior coherent.
+8. Report only actionable problems in the current scope.
 
 Do not turn this skill into a broad entropy audit or architecture redesign. Route accumulated cleanup outside the changed responsibility to `wrightkit-reclaim-entropy`; route unresolved architecture or public-contract decisions to the appropriate owner.
 

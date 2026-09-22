@@ -41,9 +41,9 @@ description: >
 
 ## Skills
 
-- `wrightkit-reclaim-entropy`: behavioral simplification and entropy reclamation.
-- `wrightkit-rust-engineering-review`: structural Rust engineering review beyond compiler and mechanical checks.
+- `wrightkit-reclaim-entropy`: post-hoc behavioral simplification and entropy reclamation.
+- `wrightkit-rust-engineering-review`: structural Rust engineering review, challenging proposed mechanisms against direct alternatives before evaluating Rust shape.
 - `wrightkit-test-design-review`: test necessity, stability, duplication, fixture cost, and production-pollution review.
-- `wrightkit-verify-change`: independent falsification, contract continuity, and verification of tests, reference comparisons, and runtime behavior.
+- `wrightkit-verify-change`: post-implementation independent falsification, contract continuity, and verification of tests, reference comparisons, and runtime behavior.
 
 Keep skills focused on procedures. Stable organization policy belongs in `wrightkit/.github`; dynamic project state belongs in the owning repository, Issue, PR, CI run, release, or generated output.
