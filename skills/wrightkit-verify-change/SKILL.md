@@ -1,26 +1,28 @@
 ---
 name: wrightkit-verify-change
 description: >
-  Independently falsify whether a material WrightKit change is actually correct
-  and complete. Use before accepting or declaring complete semantic,
-  compatibility, parser/compiler, source-edit, protocol, support-state, or
-  real-project changes, and when replacing, migrating, or retiring a public or
-  canonical API, model, IR, protocol, or boundary. Also use when the user asks
-  to verify or prove a change, asks whether a fix is really complete or ready to
-  merge, a regression fix needs independent re-checking after escaping coverage,
-  tests were authored with the implementation, surviving contract continuity
-  must be checked, or cross-repository behavior needs independent falsification.
-  Do NOT use as a routine test runner, to diagnose why coverage missed a defect,
-  for mechanical changes whose correctness is fully covered by normal gates, to
-  approve a proposed design before implementation, or to decide whether a test
-  should exist. Return VERIFIED, NOT VERIFIED, or INCONCLUSIVE.
+  Independently falsify whether a material WrightKit change someone else
+  implemented is actually correct and complete. Use in PR review or an assigned
+  QA role for semantic, compatibility, parser/compiler, source-edit, protocol,
+  support-state, or real-project changes; when a public or canonical API, model,
+  IR, protocol, or boundary is replaced, migrated, or retired and surviving
+  contract continuity must be checked; when the user asks to verify or prove a
+  change or whether a fix is really complete or ready to merge; or when a
+  regression escaped coverage and the fix needs re-checking. Do NOT use to
+  re-check your own implementation in the same task, and do not spawn a
+  subagent to run it on your own work; the Engineer verifies against an
+  independent reference under the testing policy instead. Also do not use as a
+  routine test runner, to diagnose why coverage missed a defect, for mechanical
+  changes fully covered by normal gates, to approve a design before
+  implementation, or to decide whether a test should exist. Return VERIFIED,
+  NOT VERIFIED, or INCONCLUSIVE.
 ---
 
 # WrightKit Verify Change
 
-Use this skill when acceptance of a material semantic, compatibility, parser, compiler, source-edit, protocol, or similar change needs independent falsification rather than only rerunning tests authored with the implementation, or when verifying contract continuity across a public or canonical boundary migration, replacement, or retirement.
+Use this skill as the reviewer or QA pass when acceptance of a material semantic, compatibility, parser, compiler, source-edit, protocol, or similar change needs independent falsification rather than only rerunning tests authored with the implementation, or when verifying contract continuity across a public or canonical boundary migration, replacement, or retirement.
 
-The authoritative tests-first rules are in `.github/docs/testing-policy.md`, and the canonical contract continuity policy for boundary migrations is in `.github/docs/issue-readiness-and-pr-audit.md`. Repository-local guidance may add stricter constraints. This skill defines an independent verification procedure, not a second testing policy.
+The authoritative tests-first rules are in `.github/docs/testing-policy.md`, and the canonical contract continuity policy for boundary migrations is in `.github/docs/issue-readiness.md`. Repository-local guidance may add stricter constraints. This skill defines an independent verification procedure, not a second testing policy.
 
 This is a post-implementation correctness check. It does not decide whether a
 material persistent mechanism should have been admitted; that design-admission
@@ -41,7 +43,7 @@ Describe the exact behavior that should be true after the change.
 
 Prefer an observable statement such as "an OPY import cycle produces a structured diagnostic instead of a panic" over a broad statement such as "cycle handling is improved."
 
-When replacing, hiding, or retiring a public or canonical boundary, derive surviving claims from the accepted pre-migration contract rather than only from the replacement implementation or its companion tests. Per `.github/docs/issue-readiness-and-pr-audit.md`, account for capabilities as preserved contracts, approved removals/changes, or ownership transfers, and formulate claims for representative capabilities on the replacement boundary.
+When replacing, hiding, or retiring a public or canonical boundary, derive surviving claims from the accepted pre-migration contract rather than only from the replacement implementation or its companion tests. Per `.github/docs/issue-readiness.md`, account for capabilities as preserved contracts, approved removals/changes, or ownership transfers, and formulate claims for representative capabilities on the replacement boundary.
 
 If the claim cannot be made concrete, the verification is `INCONCLUSIVE` until the contract is clarified.
 
