@@ -105,4 +105,4 @@ Verify: <smallest decisive check>
 
 Finding no safe or worthwhile cut is a valid result.
 
-When used during PR review, follow `.github/docs/issue-readiness-and-pr-audit.md`: do not expand the approved PR into an entropy cleanup unless the issue itself includes that work. Do not use accumulated cleanup as a substitute for deciding whether a new mechanism should be admitted before implementation.
+When used during PR review, follow `.github/docs/pr-review.md`: do not expand the approved PR into an entropy cleanup unless the issue itself includes that work. Do not use accumulated cleanup as a substitute for deciding whether a new mechanism should be admitted before implementation.
