@@ -23,7 +23,7 @@ Relevant placement signals include adding semantic policy to an already mixed pa
 
 Do not load it merely because Rust changed. Compiler, formatting, Clippy, ordinary repository tests, small mechanical edits, and file size by themselves are not reasons to perform a structural review.
 
-Read the nearest `AGENTS.md`, the linked issue, and relevant current repository contracts first. Establish current implementation reality separately; an ADR is decision history, not proof that the repository still matches it. Organization-wide engineering principles live in `.github/docs/engineering-quality.md`, and boundary contract continuity rules live in `.github/docs/issue-readiness-and-pr-audit.md`; do not duplicate or replace them here.
+Read the nearest `AGENTS.md`, the linked issue, and relevant current repository contracts first. Establish current implementation reality separately; an ADR is decision history, not proof that the repository still matches it. Organization-wide engineering principles live in `.github/docs/engineering-quality.md`, and boundary contract continuity rules live in `.github/docs/issue-readiness.md`; do not duplicate or replace them here.
 
 For a proposed material abstraction, dependency, public surface, ownership or
 state machinery, lifecycle or concurrency mechanism, behavior-driving metadata,
@@ -92,7 +92,7 @@ Why: abstraction can reduce complexity, but speculative generality usually moves
 
 A new public API, crate feature, dependency, protocol-facing type, or externally visible error shape creates maintenance work beyond the current implementation. Check that the current issue or existing architecture actually requires that obligation.
 
-When replacing, hiding, or retiring a public or canonical boundary (such as an API, model, IR, or protocol), verify contract continuity per `.github/docs/issue-readiness-and-pr-audit.md`: surviving accepted capabilities must be accounted for on the replacement boundary rather than orphaned in compatibility or internal paths, and removals or ownership transfers must have approved contract backing.
+When replacing, hiding, or retiring a public or canonical boundary (such as an API, model, IR, or protocol), verify contract continuity per `.github/docs/issue-readiness.md`: surviving accepted capabilities must be accounted for on the replacement boundary rather than orphaned in compatibility or internal paths, and removals or ownership transfers must have approved contract backing.
 
 Why: local code can be changed cheaply; consumers and public contracts constrain future changes. Boundary migrations carry the special risk that a replacement boundary looks complete while silently shedding surviving capabilities.
 
@@ -117,7 +117,7 @@ Do not turn this skill into a broad entropy audit or architecture redesign. Rout
 
 ## Output
 
-If this is being used as a PR review, follow `.github/docs/issue-readiness-and-pr-audit.md`: no actionable finding means `LGTM`; findings should stay concrete and local to the approved PR scope.
+If this is being used as a PR review, follow `.github/docs/pr-review.md`: no actionable finding means `LGTM`; findings should stay concrete and local to the approved PR scope.
 
 For a focused engineering investigation, state:
 

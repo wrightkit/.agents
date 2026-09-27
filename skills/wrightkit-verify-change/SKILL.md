@@ -35,15 +35,21 @@ Verification should try to distinguish a correct implementation from a plausible
 
 Why: a green suite can confirm internal consistency while still agreeing with an incorrect expectation. When replacing a boundary, legacy or compatibility tests can remain green while the replacement boundary drops existing capabilities. An independent check is useful only when it constrains the implementation from outside the change being verified.
 
+## Boundary migrations
+
+When a change replaces, hides, or retires a public or canonical boundary, derive claims from the accepted pre-migration contract rather than only from the replacement implementation or its companion tests. Per `.github/docs/issue-readiness.md`, account for each capability as a preserved contract, an approved removal or change, or an ownership transfer, and state claims for representative preserved capabilities.
+
+Verify those claims through the replacement boundary itself and compare the observations with the pre-migration contract. A check that exercises only a retired, private, hidden, or compatibility-only path does not show that a capability survives on the replacement boundary, so it cannot support `VERIFIED`.
+
 ## Procedure
+
+The steps give the order of reasoning, not a required sequence of separate actions. A single decisive check can settle several of them.
 
 ### 1. State a falsifiable claim
 
 Describe the exact behavior that should be true after the change.
 
 Prefer an observable statement such as "an OPY import cycle produces a structured diagnostic instead of a panic" over a broad statement such as "cycle handling is improved."
-
-When replacing, hiding, or retiring a public or canonical boundary, derive surviving claims from the accepted pre-migration contract rather than only from the replacement implementation or its companion tests. Per `.github/docs/issue-readiness.md`, account for capabilities as preserved contracts, approved removals/changes, or ownership transfers, and formulate claims for representative capabilities on the replacement boundary.
 
 If the claim cannot be made concrete, the verification is `INCONCLUSIVE` until the contract is clarified.
 
@@ -64,8 +70,6 @@ If no independent authority exists, do not infer correctness from the implementa
 
 Use the narrowest check that would fail if the claim were false. This may be an existing focused test, a targeted invocation with a minimal input, a corpus case with related history, or a differential comparison.
 
-For boundary migrations, require a decisive check that exercises the replacement boundary directly for representative surviving capabilities. Exercising only a retired, private, hidden, or compatibility-only path is not decisive verification for the replacement contract.
-
 Why: the purpose is to test the claim, not to maximize command coverage. Broader suites remain supporting gates.
 
 ### 4. Compare behavior
@@ -74,15 +78,13 @@ Where meaningful, compare pre-change and post-change behavior under equivalent c
 
 Look for both the intended correction and unexpected differences. Ask whether a simple plausible wrong implementation would still pass the checks you collected.
 
-A check that exercises only a retired, private, hidden, or compatibility-only boundary cannot prove that a capability survives on the replacement canonical boundary. Compare replacement-boundary observations directly against the pre-migration accepted contract.
-
 A missing historical baseline does not automatically invalidate verification if the current contract can still be tested decisively; record the limitation when it matters.
 
 ### 5. Return a verdict
 
 Use exactly one:
 
-- **`VERIFIED`** — observed behavior matches the independent contract and the check would detect a plausible incorrect implementation. For boundary migrations, representative surviving capabilities must be verified through the replacement boundary; checks resting solely on retired, private, hidden, or compatibility-only paths are explicitly insufficient for `VERIFIED`.
+- **`VERIFIED`** — observed behavior matches the independent contract and the check would detect a plausible incorrect implementation.
 - **`NOT VERIFIED`** — observed behavior conflicts with the contract, introduces a material unexpected difference, or silently drops a surviving capability without an approved contract decision.
 - **`INCONCLUSIVE`** — the available authority or checks cannot distinguish correct from incorrect behavior, or surviving capability scope across a boundary replacement remains unclarified.
 
@@ -106,4 +108,4 @@ Limitations: <material uncertainty, or none>
 Repository test candidate: <only if durable repository coverage should be considered>
 ```
 
-Do not report `VERIFIED` solely because existing tests are green, or because a retired, private, or compatibility path passes while the replacement boundary was not verified.
+Do not report `VERIFIED` solely because existing tests are green.
