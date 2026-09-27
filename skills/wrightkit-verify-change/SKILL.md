@@ -22,7 +22,7 @@ description: >
 
 Use this skill as the reviewer or QA pass when acceptance of a material semantic, compatibility, parser, compiler, source-edit, protocol, or similar change needs independent falsification rather than only rerunning tests authored with the implementation, or when verifying contract continuity across a public or canonical boundary migration, replacement, or retirement.
 
-The authoritative tests-first rules are in `.github/docs/testing-policy.md`, and the canonical contract continuity policy for boundary migrations is in `.github/docs/issue-readiness.md`. Repository-local guidance may add stricter constraints. This skill defines an independent verification procedure, not a second testing policy.
+The authoritative verification and acceptance rules are in `.github/docs/verification-and-acceptance.md`, which builds on the testing entry point `.github/docs/testing-policy.md`, and the canonical contract continuity policy for boundary migrations is in `.github/docs/issue-readiness.md`. Repository-local guidance may add stricter constraints. This skill defines an independent verification procedure, not a second testing policy.
 
 This is a post-implementation correctness check. It does not decide whether a
 material persistent mechanism should have been admitted; that design-admission
