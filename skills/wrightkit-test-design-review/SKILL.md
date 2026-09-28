@@ -20,6 +20,17 @@ Use this skill whenever a change touches a durable test surface and decide wheth
 
 The authoritative rules are `.github/docs/testing-policy.md` and `.github/docs/engineering-quality.md`. Repository-local guidance may add stricter requirements. Do not restate those policies here.
 
+
+## Advisory diff scan
+
+For a diff review that changes test code, use `scripts/scan-test-diff.py` to surface a few mechanically detectable candidates before applying the reasoning below. From the WrightKit workspace root, for example:
+
+```sh
+git diff <base>...HEAD -- | python3 .agents/skills/wrightkit-test-design-review/scripts/scan-test-diff.py
+```
+
+The scanner currently reports added test lines that use Issue/PR/task identifiers as test names, hard-coded collection lengths, or semantic-version literals inside assertions. These are leads, not findings: each candidate still needs a stable-feature and contract check, and the absence of candidates does not make the changed tests sound.
+
 ## Review principles
 
 ### A durable test needs a durable claim
