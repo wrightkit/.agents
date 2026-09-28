@@ -39,6 +39,17 @@ description: >
   Do NOT use for <adjacent non-triggers or another skill's scope>.
 ```
 
+
+## Skill admission and resources
+
+A skill should earn its own activation boundary. Create or retain one when it adds task-specific procedural value that should not be loaded for every task, or when it packages resources that materially help perform that procedure.
+
+Do not create a skill merely to restate `AGENTS.md`, canonical policy, repository documentation, or ordinary commands. Put durable constraints in their owning context or policy instead.
+
+When a repeated deterministic step inside a skill can be automated cheaply and portably, prefer a small `scripts/` helper and have the skill use it. The helper should produce observations or candidates; it must not turn a heuristic into an authority that overrides the Issue, contract, tests, or reviewer judgment.
+
+Do not add a script, hook, subagent, MCP server, or other mechanism simply to make a skill appear more capable. A reasoning-heavy skill may remain text-only when progressive disclosure of its procedure is the actual value and no useful deterministic step exists.
+
 ## Skills
 
 - `wrightkit-reclaim-entropy`: post-hoc behavioral simplification and entropy reclamation.
