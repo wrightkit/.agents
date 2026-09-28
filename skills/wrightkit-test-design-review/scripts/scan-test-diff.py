@@ -11,10 +11,6 @@ from __future__ import annotations
 import re
 import sys
 
-TEST_PATH_RE = re.compile(
-    r"(^|/)(tests?|specs?)(/|$)|(^|/)(test|spec)[^/]*\.[^/]+$|_(test|spec)\.[^/]+$",
-    re.IGNORECASE,
-)
 TASK_NAME_RE = re.compile(
     r"\b(?:fn|def|function)\s+[A-Za-z0-9_]*(?:issue|pr|task|ticket)[_-]?\d+[A-Za-z0-9_]*",
     re.IGNORECASE,
@@ -60,7 +56,7 @@ def main() -> int:
 
         if line.startswith("+") and not line.startswith("+++"):
             new_line += 1
-            if current_path is None or not TEST_PATH_RE.search(current_path):
+            if current_path is None:
                 continue
 
             code = line[1:]
