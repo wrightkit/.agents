@@ -6,9 +6,9 @@ description: >
   on-demand sweeps of agent-benchmark failures, differential or corpus
   failures, recurring CI failures, real-project regressions, entropy audit
   findings, or contract-versus-code drift; also to triage or file Issues from a
-  failure. Do NOT use to implement an Issue, to mark an
-  Issue ready-for-implementation, to review a PR, to answer what to work on
-  next (read the roadmap and ready Issues), or to file Issues from `docs/goal.md`
+  failure. Do NOT use to implement an Issue, to promote an Issue outside the
+  owner-delegated class, to review a PR, to answer what to work on next (read
+  the roadmap and ready Issues), or to file Issues from `docs/goal.md`
   alone without a reproducible failure or evidenced gap.
 ---
 
@@ -29,7 +29,7 @@ The authoritative rules are `.github/docs/agent-loop.md`, `.github/docs/issue-re
 
 ## Boundaries
 
-- Never label an Issue `ready-for-implementation`; the owner does.
+- Label an Issue `ready-for-implementation` only when it meets the owner-delegated class in `.github/docs/agent-loop.md`: acceptance fully defined by an external authority you name, no design or contract decision, one repository, no `needs-*` or `blocked` state. Otherwise the owner does.
 - File no Issue the owner has already decided against, and respect repositories the owner has paused (read the current roadmap Issue).
 - Do not reference repositories outside WrightKit as linked Issues or PRs, per `.github/AGENTS.md` global invariants.
 - Do not propose a deviation from upstream compiler output; route it as a recorded-exception decision for the owner.
