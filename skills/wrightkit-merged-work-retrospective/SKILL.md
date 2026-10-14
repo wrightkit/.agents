@@ -64,7 +64,7 @@ Two incidents are independent only when they sit in **distinct merged PRs** and 
 
 ### 4. Deduplicate before writing
 
-Before adding or escalating, search `docs/LESSONS.md` and open `wrightkit/.github` Issues for the class and for each PR URL. An incident already cited is not new. A repeat of a known class updates the existing entry (add the link and date) instead of adding another.
+Before adding or escalating, search the `docs/LESSONS.md` of each repository involved and the open escalation Issues for the class and for each PR URL. An incident already cited is not new. A repeat of a known class updates the existing entry (add the link and date) instead of adding another.
 
 ### 5. Choose the smallest effective prevention
 
@@ -80,7 +80,7 @@ Open no new policy document or registry. Route language semantics, tests, and do
 
 ### Lessons file
 
-Write entries to `docs/LESSONS.md` in `wrightkit/.github` (create it only if there is a first supported lesson). Each entry:
+Write each entry to `docs/LESSONS.md` in the repository that owns the behavior or the prevention home, not in `wrightkit/.github`. Create the file in a repository only for its first supported lesson. A class seen in several repositories gets an entry in each owner repository, citing its own incidents; the cross-repository link lives in the escalation Issue. Why: lessons are read by the people changing that repository's code, and the organization repository holds policy, not per-repository history. Each entry:
 
 ```markdown
 ### <Failure class, as a prevention rule>
@@ -90,7 +90,7 @@ Write entries to `docs/LESSONS.md` in `wrightkit/.github` (create it only if the
 - **Incidents:** <PR/review/fix links> — observed <YYYY-MM-DD>, <YYYY-MM-DD>
 ```
 
-Combine repeated instances into one entry. Never append commit summaries. Remove an entry when its rule has been promoted into the prevention home or the class is obsolete, and leave the link in the promotion Issue or PR. Do not exceed what a maintainer reads in a minute; if the file grows past that, prune rather than extend.
+Combine repeated instances into one entry per repository. Never append commit summaries. Remove an entry when its rule has been promoted into the prevention home or the class is obsolete, and leave the link in the promotion Issue or PR. Do not exceed what a maintainer reads in a minute; if the file grows past that, prune rather than extend.
 
 ### Escalation
 
@@ -98,7 +98,7 @@ For a confirmed fast recurrence, open or update one Issue in the owning reposito
 
 ### Delivery
 
-Put lessons changes in a PR from a task branch, using the identity rules in `AGENTS.md`. A night with no supported lesson and no escalation produces no commit and no PR. Escalation Issues are metadata operations and need no commit.
+Put lessons changes in one PR per affected repository, from a task branch, using the identity rules in `AGENTS.md`. A night with no supported lesson and no escalation produces no commit and no PR. Escalation Issues are metadata operations and need no commit.
 
 ### Report
 
