@@ -41,7 +41,7 @@ description: >
 
 ## Skills
 
-- `wrightkit-merged-work-retrospective`: nightly or backfill review of merged PRs that extracts reusable failure classes and escalates two-PRs-in-three-days recurrence.
+- `wrightkit-retro`: nightly or backfill review of merged PRs that extracts reusable failure classes and escalates two-PRs-in-three-days recurrence.
 - `wrightkit-reclaim-entropy`: post-hoc behavioral simplification and entropy reclamation.
 - `wrightkit-rust-engineering-review`: structural Rust engineering review, challenging proposed mechanisms against direct alternatives before evaluating Rust shape.
 - `wrightkit-test-design-review`: test necessity, stability, duplication, fixture cost, and production-pollution review.
