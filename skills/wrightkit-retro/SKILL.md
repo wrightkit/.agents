@@ -1,19 +1,24 @@
 ---
-name: wrightkit-merged-work-retrospective
+name: wrightkit-retro
 description: >
-  Retrospective over recently merged WrightKit PRs to find reusable failure
-  classes and decide where each should be prevented. Use for the nightly or
-  on-demand review of merged work, the one-time backfill of the last N days,
-  updating the organization lessons file, or checking whether the same defect
-  class hit two separate merged PRs within three days. Also use when the user
-  asks "what did we keep getting wrong lately", "any recurring review findings
-  or reworks", "did this fix get reverted or reopened", or whether a repeated
-  finding deserves a policy Issue. Do NOT use to review one PR's correctness
-  (use PR review), to verify a change, to clean up code (use
-  wrightkit-reclaim-entropy), or to write or tighten policy text itself.
+  Look back over already-merged WrightKit PRs to spot recurring defect patterns
+  and decide what should prevent them: the nightly retrospective (including dry
+  runs and catching up after missed nights), a backfill of the last N days, or a
+  "since Monday / since the last release" sweep across one or more wrightkit
+  repos.
+  Use when maintaining a repo's docs/LESSONS.md (add, dedupe against existing
+  entries, prune entries already promoted to a test or policy), or when checking
+  whether the same defect class landed in two separate merged PRs within three
+  days.
+  Also use for "which bugs do we keep hitting", "was this fix reverted or
+  reopened", "did the same class of bug land in two PRs this week", or "does this
+  deserve a policy Issue".
+  Do NOT use for reviewing or verifying a single PR or fix, debugging a failing
+  CI job, writing release notes, cleaning up code (use
+  wrightkit-reclaim-entropy), or editing policy docs such as pr-review.md.
 ---
 
-# WrightKit Merged-Work Retrospective
+# WrightKit Retro
 
 Turn evidence from merged work into a short list of prevention rules, and escalate fast when one failure class recurs. The skill produces a reviewable PR or an Issue update; it never edits policy, `AGENTS.md`, or a default branch directly.
 
