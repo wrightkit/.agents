@@ -76,7 +76,7 @@ Before adding or escalating, search the `docs/LESSONS.md` of each repository inv
 For each lesson pick one, in this order of preference:
 
 1. an executable regression test or CI check, owned by the repository that owns the behavior;
-2. the owner repository's contract or `AGENTS.md`;
+2. the owner repository's contract or `AGENTS.md`, or a repository-local principle in its `docs/principles/` when prevention is a judgment made while authoring that no test or check can choose;
 3. an existing organization policy gaining or sharpening one rule, after confirming no rule already covers it.
 
 Open no new policy document or registry. Route language semantics, tests, and domain corrections to the owning repository.
