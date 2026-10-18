@@ -19,7 +19,7 @@ Use this skill to reduce maintenance obligations without treating line count as 
 
 This is post-hoc simplification and cleanup. It is not the primary design-
 admission check for a proposed mechanism; use the organization engineering
-policy and the relevant design-review skill before implementation instead.
+policy and `wrightkit-rust-engineering-review` before implementation instead.
 
 The authoritative policies are `.github/docs/entropy-policy.md`, `.github/docs/engineering-quality.md`, and `.github/docs/testing-policy.md`. Repository-local contracts take precedence. This skill provides a reusable investigation workflow; it does not redefine public API, compatibility, licensing, or testing policy.
 

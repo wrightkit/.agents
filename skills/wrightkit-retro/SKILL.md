@@ -22,7 +22,7 @@ description: >
 
 Turn evidence from merged work into a short list of prevention rules, and escalate fast when one failure class recurs. The skill produces a reviewable PR or an Issue update; it never edits policy, `AGENTS.md`, or a default branch directly.
 
-Authority: the recurring-findings rule in `.github/docs/pr-review.md` stays the slow route (three separate PRs). This skill adds a faster signal and a small lessons file. It does not replace that rule or create a second policy authority. Promotion targets are owned by `.github/docs/testing-policy.md`, `.github/docs/engineering-quality.md`, the reviewer entry point tracked in `wrightkit/.github#83`, and each repository's own tests and `AGENTS.md`.
+Authority: the recurring-findings rule in `.github/docs/pr-review.md` stays the slow route (three separate PRs). This skill adds a faster signal and a small lessons file. It does not replace that rule or create a second policy authority. Promotion targets are owned by `.github/docs/testing-policy.md`, `.github/docs/engineering-quality.md`, and each repository's own tests and `AGENTS.md`.
 
 Why this exists: a lesson written after one incident is cheap, but a lesson inferred from commit titles is noise. The bar below keeps the file short enough to be read.
 

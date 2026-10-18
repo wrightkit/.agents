@@ -1,8 +1,9 @@
 ---
 name: wrightkit-rust-engineering-review
 description: >
-  Structural review for substantive WrightKit Rust design or implementation,
-  evaluating design admission against direct alternatives before Rust shape.
+  Structural review for substantive WrightKit Rust design or implementation:
+  first whether each new mechanism beats the direct alternative, then its Rust
+  shape and placement.
   Use when Rust changes add or alter public/canonical APIs, models, IRs,
   protocols, dependencies, ownership/borrowing, Arc/Mutex/interior mutability,
   async/concurrency/lifecycle/error behavior, non-trivial abstractions, semantic
@@ -27,20 +28,12 @@ Read the nearest `AGENTS.md`, the linked issue, and relevant current repository 
 
 For a proposed material abstraction, dependency, public surface, ownership or
 state machinery, lifecycle or concurrency mechanism, behavior-driving metadata,
-or other persistent structural mechanism, begin with design admission rather
-than its Rust shape:
-
-1. State the concrete current requirement or contract it serves.
-2. Identify the direct or existing implementation path that avoids it.
-3. Attempt removal, deferral, inlining, or reuse of existing machinery.
-4. Keep the mechanism only when the simpler path fails a current contract,
-   invariant, ownership boundary, measurable constraint, or known workflow, or
-   creates a demonstrably higher total maintenance obligation.
-
-This is a lightweight admission check for substantive mechanisms, not a
-standalone ceremony for routine local or mechanical edits. The authoritative
-rule remains `.github/docs/engineering-quality.md`; do not restate its full
-policy here.
+or other persistent structural mechanism, begin with design admission under
+`.github/docs/engineering-quality.md#admit-the-minimum-persistent-mechanism`
+rather than with its Rust shape: name the current requirement it serves, try the
+direct or existing path without it, and keep it only when that path fails a
+current contract or costs more to maintain. This is a lightweight check for
+substantive mechanisms, not a ceremony for routine or mechanical edits.
 
 ## Review principles
 
@@ -101,8 +94,8 @@ Why: local code can be changed cheaply; consumers and public contracts constrain
 Trace only the parts needed to judge the material risk:
 
 1. Establish the approved behavior, current contract, and owning domain.
-2. For each proposed material persistent mechanism, perform the direct/existing
-   alternative and removal, deferral, inlining, or reuse challenge above. If
+2. For each proposed material persistent mechanism, perform the design
+   admission check above. If
    the admission case is unresolved, stop before reviewing implementation
    technique and route the decision through the organization policy and the
    appropriate owner.
