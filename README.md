@@ -2,7 +2,7 @@
 
 This repository is the canonical home for WrightKit-wide agent skills and procedural workflows.
 
-It is intended to be checked out as `~/Repos/wrightkit/.agents` when agents are launched from the WrightKit workspace root. Codex and compatible tooling can then discover project-scoped skills from `.agents/skills` without installing WrightKit-specific skills into the user's global skill directory.
+It is intended to be checked out as `~/Repos/wrightkit/.agents` when agents are launched from the WrightKit workspace root. Codex and compatible tooling can then discover project-scoped skills from `.agents/skills` without installing WrightKit-specific skills into the user's global skill directory. Claude Code reads `.claude/skills` instead; link that whole directory with `ln -s ../.agents/skills .claude/skills` from the workspace root, not one link per skill, so new skills appear without a second step.
 
 ## Ownership boundary
 

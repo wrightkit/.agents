@@ -8,14 +8,12 @@ description: >
   IR, protocol, or boundary is replaced, migrated, or retired and surviving
   contract continuity must be checked; when the user asks to verify or prove a
   change or whether a fix is really complete or ready to merge; or when a
-  regression escaped coverage and the fix needs re-checking. Do NOT use to
-  re-check your own implementation in the same task, and do not spawn a
-  subagent to run it on your own work; the Engineer verifies against an
-  independent reference under the testing policy instead. Also do not use as a
-  routine test runner, to diagnose why coverage missed a defect, for mechanical
-  changes fully covered by normal gates, to approve a design before
-  implementation, or to decide whether a test should exist. Return VERIFIED,
-  NOT VERIFIED, or INCONCLUSIVE.
+  regression escaped coverage and the fix needs re-checking. Do NOT use on your
+  own implementation from the same task, directly or through a subagent; as a
+  routine test runner; to diagnose why coverage missed a defect or decide
+  whether a test should exist (use wrightkit-test-design-review); for
+  mechanical changes fully covered by normal gates; or to approve a design
+  before implementation. Return VERIFIED, NOT VERIFIED, or INCONCLUSIVE.
 ---
 
 # WrightKit Verify Change
@@ -27,7 +25,7 @@ The authoritative verification and acceptance rules are in `.github/docs/verific
 This is a post-implementation correctness check. It does not decide whether a
 material persistent mechanism should have been admitted; that design-admission
 and simplification review belongs to `.github/docs/engineering-quality.md` and
-the relevant design-review skill.
+`wrightkit-rust-engineering-review`.
 
 ## Principle
 
