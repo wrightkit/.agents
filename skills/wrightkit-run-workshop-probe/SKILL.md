@@ -5,9 +5,9 @@ description: >
   the result: validate the probe, hand the paste file to the user for the Overwatch
   client, save the returned Inspector text as a verbatim capture, judge it against
   the verdict table, and write `capture.json`.
-  Use when the task is to run, re-run, repeat, or record a probe (P0 to P5), to
+  Use when the task is to run, re-run, repeat, or record a probe, to
   judge a pasted Inspector log, or to find which probe still needs runs.
-  Also use when the user pastes an Inspector log containing `P0` to `P5` lines, or
+  Also use when the user pastes an Inspector log with probe lines such as `P0 ...`, or
   asks to measure tick, Wait, rule-order, or value-refresh behavior in the real client.
   Do NOT use to design or edit a probe (follow `runtime/AGENTS.md`), to change
   Workshop semantics or catalog data, or to claim a probe was run without a capture.
@@ -19,7 +19,7 @@ One probe, one session. The agent prepares the file and judges the result. Pasti
 the client and copying the Inspector back is done by the user. Do not attempt to drive
 the game client yourself, and never state or imply a probe ran unless a capture exists.
 
-All paths below are relative to the `runtime` repository (`~/Repos/wrightkit/runtime`);
+All paths below are relative to the `runtime` repository;
 work from that directory. The expected values and the `match` / `mismatch` /
 `inconclusive` conditions are in `docs/procedure.zh-CN.md` under "操作与判定". Read that
 table for the chosen probe. Do not restate or invent expected values in this skill or in
@@ -37,8 +37,8 @@ matches. Report which one and why.
 ```bash
 wright check --kind workshop probes/<id>/probe.workshop
 wright check --kind workshop probes/<id>/probe.zh-CN.ow
-wright inspect cost --kind workshop probes/<id>/probe.workshop | grep -o "[0-9]* element(s) of"
-wright inspect cost --kind workshop --locale zh-CN probes/<id>/probe.zh-CN.ow | grep -o "[0-9]* element(s) of"
+wright inspect cost --kind workshop -f json probes/<id>/probe.workshop | jq .result.elementCount.total
+wright inspect cost --kind workshop --locale zh-CN -f json probes/<id>/probe.zh-CN.ow | jq .result.elementCount.total
 shasum -a 256 probes/<id>/probe.zh-CN.ow
 ```
 
@@ -54,10 +54,9 @@ Tell the user, briefly:
 2. The general steps from "通用步骤" in `docs/procedure.zh-CN.md` (Workshop mode, Inspector and
    recording on, no Slow Motion, only this probe pasted, start the game, do not touch the
    character).
-3. The probe's last log line to wait for, from the procedure table.
-4. P5 only: choose a hero and spawn, leave about 3 seconds of open ground ahead. The
-   first log line must show `spawned=真` and a coordinate triple.
-5. To paste back the **whole** Inspector text, variable block included.
+3. The probe's last log line to wait for, and any probe-specific setup (such as
+   spawning a hero), from the procedure table.
+4. To paste back the **whole** Inspector text, variable block included.
 
 Then wait. Do not continue until the user sends the text.
 
@@ -67,10 +66,10 @@ Check the pasted text before saving:
 
 - the variable block is present;
 - the probe's last log line is present, and the line count matches the procedure table;
-- for P5, the first line shows `spawned=真` and a coordinate, not `pos=0`.
+- any validity line the procedure table requires for this probe is present and valid.
 
 If a check fails, say which one and ask for the text again, or mark the run invalid
-(P5 with `pos=0` means the host had not spawned). Never repair, reformat, or complete
+when the table says the run is void. Never repair, reformat, or complete
 the text.
 
 Save it unchanged: `capture.txt` for run 1, `capture-2.txt` for run 2, `capture-3.txt`
@@ -106,8 +105,8 @@ Update or create `probes/<id>/capture.json` with the existing shape:
 
 - Ask the user for the client version once if it is empty. Do not guess it.
 - `runs` is the number of saved captures that are valid for this `probe_sha256`.
-- `notes` states whether the result is provisional, anything the probe cannot test
-  (for example P5 does not test `Update Every Frame` inside HUD or effects), and
+- `notes` states whether the result is provisional, anything the procedure table says the
+  probe cannot test, and
   invalid runs.
 - Keep `observed` to what the capture shows, in milliseconds.
 
