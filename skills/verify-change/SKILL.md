@@ -1,9 +1,9 @@
 ---
-name: wrightkit-verify-change
+name: verify-change
 description: >
-  Independently falsify whether a material WrightKit change someone else
-  implemented is actually correct and complete. Use in PR review or an assigned
-  QA role for semantic, compatibility, parser/compiler, source-edit, protocol,
+  Independently falsify whether a material change someone else implemented is
+  actually correct and complete. Use in PR review or an assigned QA role for
+  semantic, compatibility, parser/compiler, source-edit, protocol,
   support-state, or real-project changes; when a public or canonical API, model,
   IR, protocol, or boundary is replaced, migrated, or retired and surviving
   contract continuity must be checked; when the user asks to verify or prove a
@@ -11,21 +11,18 @@ description: >
   regression escaped coverage and the fix needs re-checking. Do NOT use on your
   own implementation from the same task, directly or through a subagent; as a
   routine test runner; to diagnose why coverage missed a defect or decide
-  whether a test should exist (use wrightkit-test-design-review); for
-  mechanical changes fully covered by normal gates; or to approve a design
-  before implementation. Return VERIFIED, NOT VERIFIED, or INCONCLUSIVE.
+  whether a test should exist (use test-design-review); for mechanical changes
+  fully covered by normal gates; or to approve a design before implementation.
+  Return VERIFIED, NOT VERIFIED, or INCONCLUSIVE.
 ---
 
-# WrightKit Verify Change
+# Verify Change
 
 Use this skill as the reviewer or QA pass when acceptance of a material semantic, compatibility, parser, compiler, source-edit, protocol, or similar change needs independent falsification rather than only rerunning tests authored with the implementation, or when verifying contract continuity across a public or canonical boundary migration, replacement, or retirement.
 
-The authoritative verification and acceptance rules are in `.github/docs/verification-and-acceptance.md`, which builds on the testing entry point `.github/docs/testing-policy.md`, and the canonical contract continuity policy for boundary migrations is in `.github/docs/issue-readiness.md`. Repository-local guidance may add stricter constraints. This skill defines an independent verification procedure, not a second testing policy.
+Find the project's verification, testing, and boundary-migration policy through the nearest `AGENTS.md` (or equivalent contributor guidance) and its routing; those rules, and any stricter repository-local constraints, take precedence. This skill defines an independent verification procedure, not a second testing policy.
 
-This is a post-implementation correctness check. It does not decide whether a
-material persistent mechanism should have been admitted; that design-admission
-and simplification review belongs to `.github/docs/engineering-quality.md` and
-`wrightkit-rust-engineering-review`.
+This is a post-implementation correctness check. It does not decide whether a material persistent mechanism should have been admitted; that belongs to the project's design policy and, for Rust, `rust-engineering-review`.
 
 ## Principle
 
@@ -35,7 +32,7 @@ Why: a green suite can confirm internal consistency while still agreeing with an
 
 ## Boundary migrations
 
-When a change replaces, hides, or retires a public or canonical boundary, derive claims from the accepted pre-migration contract rather than only from the replacement implementation or its companion tests. Per `.github/docs/issue-readiness.md`, account for each capability as a preserved contract, an approved removal or change, or an ownership transfer, and state claims for representative preserved capabilities.
+When a change replaces, hides, or retires a public or canonical boundary, derive claims from the accepted pre-migration contract rather than only from the replacement implementation or its companion tests. Account for each capability as a preserved contract, an approved removal or change, or an ownership transfer, and state claims for representative preserved capabilities.
 
 Verify those claims through the replacement boundary itself and compare the observations with the pre-migration contract. A check that exercises only a retired, private, hidden, or compatibility-only path does not show that a capability survives on the replacement boundary, so it cannot support `VERIFIED`.
 
@@ -47,7 +44,7 @@ The steps give the order of reasoning, not a required sequence of separate actio
 
 Describe the exact behavior that should be true after the change.
 
-Prefer an observable statement such as "an OPY import cycle produces a structured diagnostic instead of a panic" over a broad statement such as "cycle handling is improved."
+Prefer an observable statement such as "an import cycle produces a structured diagnostic instead of a panic" over a broad statement such as "cycle handling is improved."
 
 If the claim cannot be made concrete, the verification is `INCONCLUSIVE` until the contract is clarified.
 
@@ -55,8 +52,8 @@ If the claim cannot be made concrete, the verification is `INCONCLUSIVE` until t
 
 Find the source that defines correct behavior independently of the implementation under test, such as:
 
-- reproducible Workshop runtime behavior;
-- a pinned upstream oracle;
+- reproducible behavior of the real target runtime or platform;
+- a pinned upstream oracle or reference implementation;
 - an accepted semantic or public contract;
 - the accepted pre-migration contract or baseline for surviving capabilities across boundary replacement;
 - a reproducible real-project runtime or workflow with related history;
@@ -90,9 +87,9 @@ If the result is not `VERIFIED`, state what contract, check, or implementation c
 
 ## Repository artifacts
 
-Verification output is task-local information, not automatically repository state. Keep ad-hoc logs, reports, snapshots, minimized inputs, or other verification files ephemeral unless `.github/docs/testing-policy.md` establishes a durable reason and canonical owner for them.
+Verification output is task-local information, not automatically repository state. Keep ad-hoc logs, reports, snapshots, minimized inputs, or other verification files ephemeral unless the project's testing policy establishes a durable reason and canonical owner for them.
 
-If verification reveals a reusable regression that deserves permanent coverage, report it as a candidate for integration into the owning repository's established test structure. Do not create a new verification taxonomy or directory in this skill.
+If verification reveals a reusable regression that deserves permanent coverage, report it as a candidate for integration into the owning repository's established test structure. Do not create a new verification taxonomy or directory.
 
 ## Output
 
