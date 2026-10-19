@@ -1,27 +1,25 @@
 ---
-name: wrightkit-reclaim-entropy
+name: reclaim-entropy
 description: >
-  WrightKit simplification: find or remove duplicate truth, dead
-  or redundant abstractions, obsolete fallbacks or compatibility layers,
-  post-migration leftovers, unused consumers, duplicated state/config, or
-  replacement cleanup. Use for repo/codebase cleanup, entropy audits, migration
-  cleanup, or focused "is this still load-bearing?" investigations. Also use
-  when the user asks what can be deleted or simplified, to remove leftovers,
-  find bloat or duplicate truth, or clean up after a replacement. Do NOT use for
-  routine feature implementation, correctness-only PR review, self-authorizing
-  removal of public or compatibility contracts, or to approve a new mechanism
-  before implementation.
+  Codebase simplification: find or remove duplicate truth, dead or redundant
+  abstractions, obsolete fallbacks or compatibility layers, post-migration
+  leftovers, unused consumers, duplicated state/config, or replacement cleanup.
+  Use for repo/codebase cleanup, entropy audits, migration cleanup, or focused
+  "is this still load-bearing?" investigations. Also use when the user asks what
+  can be deleted or simplified, to remove leftovers, find bloat or duplicate
+  truth, or clean up after a replacement. Do NOT use for routine feature
+  implementation, correctness-only PR review, self-authorizing removal of public
+  or compatibility contracts, or to approve a new mechanism before
+  implementation (use rust-engineering-review or the project's design policy).
 ---
 
-# WrightKit Reclaim Entropy
+# Reclaim Entropy
 
 Use this skill to reduce maintenance obligations without treating line count as the objective.
 
-This is post-hoc simplification and cleanup. It is not the primary design-
-admission check for a proposed mechanism; use the organization engineering
-policy and `wrightkit-rust-engineering-review` before implementation instead.
+This is post-hoc simplification and cleanup. It is not the design-admission check for a proposed mechanism; that happens before implementation under the project's engineering policy or `rust-engineering-review`.
 
-The authoritative policies are `.github/docs/entropy-policy.md`, `.github/docs/engineering-quality.md`, and `.github/docs/testing-policy.md`. Repository-local contracts take precedence. This skill provides a reusable investigation workflow; it does not redefine public API, compatibility, licensing, or testing policy.
+Project policy comes first. Find the project's entropy, engineering-quality, and testing policy through the nearest `AGENTS.md` (or equivalent contributor guidance) and its routing; repository-local contracts take precedence over this skill. This skill provides an investigation workflow; it does not define public API, compatibility, licensing, or testing policy.
 
 Core principle:
 
@@ -45,21 +43,21 @@ For each meaningful candidate, answer four questions.
 
 ### What maintenance obligation exists?
 
-Name the concept being maintained: an API, state representation, wrapper layer, fallback, dependency, feature switch, lifecycle mechanism, fixture, generated surface, or duplicated semantic fact.
+Name the concept being maintained: an API, state representation, wrapper layer, fallback, dependency, feature switch, lifecycle mechanism, fixture, generated surface, or duplicated domain fact.
 
 Why: deleting lines is not useful if the same obligation simply moves elsewhere.
 
 ### Who actually depends on it?
 
-Trace callers and consumers far enough to understand whether the surface is production, test-only, generated, dynamic, cross-repository, or external. Search strings, protocol/config keys, build/codegen paths, registries, and known downstream WrightKit consumers when relevant.
+Trace callers and consumers far enough to understand whether the surface is production, test-only, generated, dynamic, cross-repository, or external. Search strings, protocol/config keys, build/codegen paths, registries, and known downstream consumers in sibling repositories when relevant.
 
-Why: local reference counts are incomplete on their own in a multi-repository ecosystem.
+Why: local reference counts are incomplete on their own, especially when other repositories or external users consume the surface.
 
 ### What makes it load-bearing?
 
 Identify the contract, ownership decision, compatibility requirement, lifecycle need, historical reason, or current consumer that justifies the surface.
 
-If the candidate touches a public or protocol contract, persisted data, declared OPY/DEL/OSTW/raw Workshop compatibility, security boundary, licensing boundary, or unresolved cross-repository ownership decision, do not self-authorize its removal. Route the decision to the appropriate owner.
+If the candidate touches a public or protocol contract, persisted data, a declared compatibility guarantee, a security boundary, a licensing boundary, or an unresolved cross-repository ownership decision, do not self-authorize its removal. Route the decision to the appropriate owner.
 
 Why: simplification is an implementation decision only while the behavior being removed is not itself a protected product or architecture decision.
 
@@ -105,4 +103,4 @@ Verify: <smallest decisive check>
 
 Finding no safe or worthwhile cut is a valid result.
 
-When used during PR review, follow `.github/docs/pr-review.md`: do not expand the approved PR into an entropy cleanup unless the issue itself includes that work. Do not use accumulated cleanup as a substitute for deciding whether a new mechanism should be admitted before implementation.
+During PR review, follow the project's review policy: do not expand the approved PR into an entropy cleanup unless its Issue includes that work, and do not use accumulated cleanup as a substitute for deciding whether a new mechanism should be admitted before implementation.

@@ -1,24 +1,24 @@
 ---
-name: wrightkit-test-design-review
+name: test-design-review
 description: >
-  Review whether WrightKit tests protect durable behavior instead of mirroring
-  current implementation. Use whenever a change adds, removes, rewrites, fixes,
-  or updates tests, assertions, expected values, snapshots, fixtures, corpus
+  Review whether tests protect durable behavior instead of mirroring current
+  implementation. Use whenever a change adds, removes, rewrites, fixes, or
+  updates tests, assertions, expected values, snapshots, fixtures, corpus
   expectations, support states, or test-only production surface. Also use for
   dependency/version bumps that change expectations, hard-coded
   version/count/date/SHA/member-list literals, tests edited just to restore green
   CI, duplicated coverage, or when the user asks "do we need this test?", "is
   this test hard-coded or brittle?", or "why didn't tests catch this?" Do NOT
   use merely to run an unchanged test suite or as independent acceptance
-  verification when test design itself is not under review. Return keep,
-  consolidate, rewrite, or delete.
+  verification when test design itself is not under review (use verify-change).
+  Return keep, consolidate, rewrite, or delete.
 ---
 
-# WrightKit Test Design Review
+# Test Design Review
 
 Use this skill whenever a change touches a durable test surface and decide whether the affected coverage protects the right claim. A code change does not automatically require a new test, and an existing expectation does not automatically deserve to be updated or retained.
 
-The authoritative rules are `.github/docs/testing-policy.md` and `.github/docs/engineering-quality.md`. Repository-local guidance may add stricter requirements. Do not restate those policies here.
+Find the project's testing policy through the nearest `AGENTS.md` (or equivalent contributor guidance) and its routing; its rules, and any stricter repository-local guidance, take precedence. Do not restate that policy here.
 
 ## Review principles
 
@@ -71,7 +71,7 @@ Reason through these questions rather than treating them as a mandatory checklis
 - Is this the smallest useful layer and input?
 - Does the test introduce disproportionate fixture or production-surface cost?
 
-If a fixture, corpus case, snapshot, or other test artifact should be kept in the repository, route that question to the tests-first organization policy in `.github/docs/testing-policy.md` instead of inventing a local admission policy.
+Whether a fixture, corpus case, snapshot, or other test artifact belongs in the repository is decided by the project's testing policy; do not invent a local admission rule.
 
 ## Decision
 

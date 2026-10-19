@@ -2,6 +2,8 @@
 
 This repository is the canonical home for WrightKit-wide agent skills and procedural workflows.
 
+Most skills here are project-agnostic: they carry a reusable procedure and find the project's own policy through the nearest `AGENTS.md` and its routing, so they work unchanged in any repository that has such guidance. In WrightKit, that routing is the policy table in `.github/AGENTS.md`. Skills bound to one WrightKit repository keep the `wrightkit-` prefix.
+
 It is intended to be checked out as `~/Repos/wrightkit/.agents` when agents are launched from the WrightKit workspace root. Codex and compatible tooling can then discover project-scoped skills from `.agents/skills` without installing WrightKit-specific skills into the user's global skill directory. Claude Code reads `.claude/skills` instead; link that whole directory with `ln -s ../.agents/skills .claude/skills` from the workspace root, not one link per skill, so new skills appear without a second step.
 
 ## Ownership boundary
@@ -10,7 +12,7 @@ It is intended to be checked out as `~/Repos/wrightkit/.agents` when agents are 
 - `wrightkit/.github` owns organization-wide engineering policy, CI/release standards, testing policy, and workspace agent routing.
 - Individual WrightKit repositories own repository-specific architecture, contracts, source, tests, and local `AGENTS.md` guidance.
 
-Skills should reference canonical policy in the sibling workspace checkout, for example `.github/docs/testing-policy.md`, rather than copying policy text into this repository.
+Skills name the policy concern they depend on, such as the testing or verification policy, and leave its location to the project's `AGENTS.md` routing rather than hard-coding a path or copying policy text into this repository. A skill that only makes sense in one repository may name that repository's files directly.
 
 ## Skill activation
 
@@ -41,11 +43,16 @@ description: >
 
 ## Skills
 
-- `wrightkit-retro`: nightly or backfill review of merged PRs that extracts reusable failure classes and escalates two-PRs-in-three-days recurrence.
-- `wrightkit-reclaim-entropy`: post-hoc behavioral simplification and entropy reclamation.
-- `wrightkit-rust-engineering-review`: structural Rust engineering review, challenging proposed mechanisms against direct alternatives before evaluating Rust shape.
+Project-agnostic:
+
+- `merged-pr-retro`: nightly or backfill review of merged PRs that extracts reusable failure classes and escalates two-PRs-in-three-days recurrence.
+- `reclaim-entropy`: post-hoc behavioral simplification and entropy reclamation.
+- `rust-engineering-review`: structural Rust engineering review, challenging proposed mechanisms against direct alternatives before evaluating Rust shape.
+- `test-design-review`: test necessity, stability, duplication, fixture cost, and production-pollution review.
+- `verify-change`: post-implementation independent falsification, contract continuity, and verification of tests, reference comparisons, and runtime behavior.
+
+WrightKit-specific:
+
 - `wrightkit-run-workshop-probe`: run one Workshop runtime-behavior probe from the `runtime` repository, with the user pasting into the client, then save the verbatim capture and judge it against the verdict table.
-- `wrightkit-test-design-review`: test necessity, stability, duplication, fixture cost, and production-pollution review.
-- `wrightkit-verify-change`: post-implementation independent falsification, contract continuity, and verification of tests, reference comparisons, and runtime behavior.
 
 Keep skills focused on procedures. Stable organization policy belongs in `wrightkit/.github`; dynamic project state belongs in the owning repository, Issue, PR, CI run, release, or generated output.

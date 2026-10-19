@@ -1,9 +1,9 @@
 ---
-name: wrightkit-rust-engineering-review
+name: rust-engineering-review
 description: >
-  Structural review for substantive WrightKit Rust design or implementation:
-  first whether each new mechanism beats the direct alternative, then its Rust
-  shape and placement.
+  Structural review for substantive Rust design or implementation: first
+  whether each new mechanism beats the direct alternative, then its Rust shape
+  and placement.
   Use when Rust changes add or alter public/canonical APIs, models, IRs,
   protocols, dependencies, ownership/borrowing, Arc/Mutex/interior mutability,
   async/concurrency/lifecycle/error behavior, non-trivial abstractions, semantic
@@ -13,27 +13,20 @@ description: >
   whether a proposed mechanism is necessary or over-engineered, whether code is
   idiomatic, or whether code lives in the right owner/module. Do NOT use for
   fmt/Clippy/compiler-only fixes, routine mechanical edits, or broad repo
-  cleanup outside the changed responsibility.
+  cleanup outside the changed responsibility (use reclaim-entropy).
 ---
 
-# WrightKit Rust Engineering Review
+# Rust Engineering Review
 
 Use this skill when a Rust change has a real structural risk: ownership or shared state, a public API or dependency boundary, a public or canonical boundary migration, non-trivial error/lifecycle behavior, concurrency, an abstraction whose cost may exceed the problem it solves, or a placement decision that can make domain behavior harder to find and maintain.
 
-Relevant placement signals include adding semantic policy to an already mixed parser/lowerer/compiler/checker, spreading one feature across unrelated phases, growing generic registries or metadata into behavior interpreters, or extending a large implementation unit simply because adjacent code already lives there.
+Relevant placement signals include adding domain policy to an already mixed parser/lowerer/compiler/checker, spreading one feature across unrelated phases, growing generic registries or metadata into behavior interpreters, or extending a large implementation unit simply because adjacent code already lives there.
 
 Do not load it merely because Rust changed. Compiler, formatting, Clippy, ordinary repository tests, small mechanical edits, and file size by themselves are not reasons to perform a structural review.
 
-Read the nearest `AGENTS.md`, the linked issue, and relevant current repository contracts first. Establish current implementation reality separately; an ADR is decision history, not proof that the repository still matches it. Organization-wide engineering principles live in `.github/docs/engineering-quality.md`, and boundary contract continuity rules live in `.github/docs/issue-readiness.md`; do not duplicate or replace them here.
+Read the nearest `AGENTS.md` (or equivalent contributor guidance), the linked Issue, and relevant current repository contracts first, and follow their routing to the project's engineering-quality and boundary-migration policy; those rules take precedence over this skill. Establish current implementation reality separately; an ADR is decision history, not proof that the repository still matches it.
 
-For a proposed material abstraction, dependency, public surface, ownership or
-state machinery, lifecycle or concurrency mechanism, behavior-driving metadata,
-or other persistent structural mechanism, begin with design admission under
-`.github/docs/engineering-quality.md#admit-the-minimum-persistent-mechanism`
-rather than with its Rust shape: name the current requirement it serves, try the
-direct or existing path without it, and keep it only when that path fails a
-current contract or costs more to maintain. This is a lightweight check for
-substantive mechanisms, not a ceremony for routine or mechanical edits.
+For a proposed material abstraction, dependency, public surface, ownership or state machinery, lifecycle or concurrency mechanism, behavior-driving metadata, or other persistent structural mechanism, begin with design admission rather than with its Rust shape: name the current requirement it serves, try the direct or existing path without it, and keep it only when that path fails a current contract or costs more to maintain. Apply the project's own admission rule when it has one. This is a lightweight check for substantive mechanisms, not a ceremony for routine or mechanical edits.
 
 ## Review principles
 
@@ -47,7 +40,7 @@ Why: a sophisticated implementation may be justified by a difficult domain, whil
 
 ### Preserve feature locality and coherent responsibility
 
-Prefer a primary implementation home that corresponds to the domain responsibility being changed. Phase-oriented modules such as parsers, lowerers, emitters, compilers, checkers, registries, and catalogs should not become default homes for unrelated semantic policy merely because they already contain nearby cases.
+Prefer a primary implementation home that corresponds to the domain responsibility being changed. Phase-oriented modules such as parsers, lowerers, emitters, compilers, checkers, registries, and catalogs should not become default homes for unrelated domain policy merely because they already contain nearby cases.
 
 A bounded extraction is justified when it is needed to keep the changed behavior cohesive and discoverable. Do not expand that into unrelated cleanup or a repository-wide reorganization.
 
@@ -55,7 +48,7 @@ Why: repeated smallest-diff additions can make every PR individually easy to rev
 
 ### Keep behavior in code and facts in data
 
-Prefer typed Rust for semantic transformations, context-sensitive behavior, invariants, control flow, receiver/member rules, validation policy, and lowering decisions. Validated or generated data is appropriate for genuinely declarative bulk facts such as names, aliases, localization, enum membership, and large inventories.
+Prefer typed Rust for domain transformations, context-sensitive behavior, invariants, control flow, validation policy, and lowering decisions. Validated or generated data is appropriate for genuinely declarative bulk facts such as names, aliases, localization, enum membership, and large inventories.
 
 When a new metadata or registry field causes generic code to decide program behavior, review it as a semantic abstraction: identify the stable data contract it represents and why that indirection is clearer and cheaper than explicit typed behavior.
 
@@ -83,9 +76,9 @@ Why: abstraction can reduce complexity, but speculative generality usually moves
 
 ### Treat public surface and dependencies as obligations
 
-A new public API, crate feature, dependency, protocol-facing type, or externally visible error shape creates maintenance work beyond the current implementation. Check that the current issue or existing architecture actually requires that obligation.
+A new public API, crate feature, dependency, protocol-facing type, or externally visible error shape creates maintenance work beyond the current implementation. Check that the current Issue or existing architecture actually requires that obligation.
 
-When replacing, hiding, or retiring a public or canonical boundary (such as an API, model, IR, or protocol), verify contract continuity per `.github/docs/issue-readiness.md`: surviving accepted capabilities must be accounted for on the replacement boundary rather than orphaned in compatibility or internal paths, and removals or ownership transfers must have approved contract backing.
+When replacing, hiding, or retiring a public or canonical boundary (such as an API, model, IR, or protocol), check contract continuity: surviving accepted capabilities must be accounted for on the replacement boundary rather than orphaned in compatibility or internal paths, and removals or ownership transfers must have approved contract backing.
 
 Why: local code can be changed cheaply; consumers and public contracts constrain future changes. Boundary migrations carry the special risk that a replacement boundary looks complete while silently shedding surviving capabilities.
 
@@ -94,11 +87,7 @@ Why: local code can be changed cheaply; consumers and public contracts constrain
 Trace only the parts needed to judge the material risk:
 
 1. Establish the approved behavior, current contract, and owning domain.
-2. For each proposed material persistent mechanism, perform the design
-   admission check above. If
-   the admission case is unresolved, stop before reviewing implementation
-   technique and route the decision through the organization policy and the
-   appropriate owner.
+2. For each proposed material persistent mechanism, perform the design admission check above. If the admission case is unresolved, stop before reviewing implementation technique and route the decision to the appropriate owner.
 3. Inspect the current implementation location and the minimum callers/consumers needed to understand its responsibility.
 4. Ask whether the proposed placement makes the domain behavior easier to locate and reason about, or deepens an already mixed responsibility.
 5. If metadata/registry/schema changes drive behavior, identify whether they represent declarative facts or a new semantic interpreter layer.
@@ -106,11 +95,11 @@ Trace only the parts needed to judge the material risk:
 7. Compare the surviving design against the simplest viable design that satisfies the same contract while keeping the changed behavior coherent.
 8. Report only actionable problems in the current scope.
 
-Do not turn this skill into a broad entropy audit or architecture redesign. Route accumulated cleanup outside the changed responsibility to `wrightkit-reclaim-entropy`; route unresolved architecture or public-contract decisions to the appropriate owner.
+Do not turn this skill into a broad entropy audit or architecture redesign. Route accumulated cleanup outside the changed responsibility to `reclaim-entropy`; route unresolved architecture or public-contract decisions to the appropriate owner.
 
 ## Output
 
-If this is being used as a PR review, follow `.github/docs/pr-review.md`: no actionable finding means `LGTM`; findings should stay concrete and local to the approved PR scope.
+If this is being used as a PR review, follow the project's review policy; absent one, no actionable finding means `LGTM`, and findings stay concrete and local to the approved PR scope.
 
 For a focused engineering investigation, state:
 
