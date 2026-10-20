@@ -1,7 +1,7 @@
 ---
 name: wrightkit-run-workshop-probe
 description: >
-  Run one Workshop runtime-behavior probe from the `runtime` repository and record
+  Run one Workshop runtime-behavior probe from the `athena` repository and record
   the result: validate the probe, hand the paste file to the user for the Overwatch
   client, save the returned Inspector text as a verbatim capture, judge it against
   the verdict table, and write `capture.json`.
@@ -9,7 +9,7 @@ description: >
   judge a pasted Inspector log, or to find which probe still needs runs.
   Also use when the user pastes an Inspector log with probe lines such as `P0 ...`, or
   asks to measure tick, Wait, rule-order, or value-refresh behavior in the real client.
-  Do NOT use to design or edit a probe (follow `runtime/AGENTS.md`), to change
+  Do NOT use to design or edit a probe (follow `athena/AGENTS.md`), to change
   Workshop semantics or catalog data, or to claim a probe was run without a capture.
 ---
 
@@ -19,7 +19,7 @@ One probe, one session. The agent prepares the file and judges the result. Pasti
 the client and copying the Inspector back is done by the user. Do not attempt to drive
 the game client yourself, and never state or imply a probe ran unless a capture exists.
 
-All paths below are relative to the `runtime` repository;
+All paths below are relative to the `athena` repository;
 work from that directory. The expected values and the `match` / `mismatch` /
 `inconclusive` conditions are in `docs/procedure.zh-CN.md` under "操作与判定". Read that
 table for the chosen probe. Do not restate or invent expected values in this skill or in
