@@ -1,4 +1,2 @@
-# Agent skills bind how every WrightKit agent works.
-# Skill changes need owner review; the README stays unowned.
+# Skills change often, so only this file is owned.
 /.github/CODEOWNERS @Teakowa
-/skills/ @Teakowa
