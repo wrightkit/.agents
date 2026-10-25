@@ -51,13 +51,16 @@ Read `probes/<id>/expect.json` for the `end` line and the expected line count.
 ## 3. Run in the client
 
 If the user pastes the log themselves, go to step 4. Otherwise drive the client by
-computer use. Request access to Overwatch first. Do not enter credentials, and do not sign
-in on the user's behalf; if the client needs a sign-in, stop and ask.
+computer use. The client runs on a remote Windows machine; reach it through the remote
+desktop window on this Mac. Request access to the remote desktop app first. Do not enter
+credentials, and do not sign in on the user's behalf; if a sign-in is needed, stop and ask.
+Install nothing on the Windows machine.
 
 Follow "Agent 执行" in `docs/procedure.zh-CN.md`:
 
-1. Put `probes/<id>/probe.zh-CN.ow` on the clipboard (`write_clipboard` with the file
-   content). Never edit it.
+1. Get `probes/<id>/probe.zh-CN.ow` into the client unchanged. Use whatever the remote
+   desktop offers: clipboard sync, file transfer, or typing into Notepad. Check the pasted
+   rule count against the file. Never edit the probe.
 2. In a new Custom Game in Workshop mode, clear existing rules, paste the probe, turn on
    the Workshop Inspector and Inspector recording, and confirm Slow Motion is off.
 3. Apply the probe-specific set-up from the procedure doc (P5 and P7 need the host to
@@ -69,20 +72,24 @@ Follow "Agent 执行" in `docs/procedure.zh-CN.md`:
 If a screen does not match the procedure (a dialog, a different language, a missing
 button), stop and report with a screenshot. Do not guess a click.
 
-## 4. Get the log as a file
+## 4. Get the log as a file on this Mac
 
-One run per file, with a different file name each time (`sources` de-duplicates by name).
-Save into `.wright/runs/` (ignored by Git), for example
-`.wright/runs/<id>-<n>.log`.
+The client writes its log on the Windows machine
+(`文档\Overwatch\Workshop\Log-<date>.txt`). Bring the text back by any means the remote
+desktop allows: file transfer, clipboard sync, or copy from the Inspector. Choose the means
+that works. Do not set up anything on the Windows machine.
 
-- Preferred: the Inspector log file the client writes. The procedure doc names where it
-  is once known. If you find it, report the path in the final report.
-- Fallback: select all in the Inspector, copy, read the clipboard, and save the text
-  unchanged. P6 also needs the variable block (see its entry in the procedure doc).
+Save one run per file in `.wright/runs/` (ignored by Git), with a different file name each
+time (`sources` de-duplicates by name). Keep the client's log file name when you copy the
+file, for example `.wright/runs/Log-2026-10-19-12-45-59.txt`. Otherwise use
+`.wright/runs/<id>-<n>.log`. Save the text unchanged. P6 also needs the variable block (see
+its entry in the procedure doc).
 
 Check before ingesting: the `end` line is present once, and the line count matches. If the
-text is cut short, mixed with another probe, or starts before the probe's first line,
-discard the run and redo it. Never repair, reformat, or complete the text.
+text is cut short, mixed with another probe, garbled (encoding, line endings), or starts
+before the probe's first line, discard the run and redo it. Never repair, reformat, or
+complete the text. Report which means worked and the log file's encoding, so the procedure
+doc can record them.
 
 ## 5. Ingest
 
@@ -95,9 +102,6 @@ cargo run -p athena-capture -- ingest probes/<id> .wright/runs/<id>-<n>.log
 lines, stale `probe_sha256`, `runs` out of step with the saved files, another probe's
 lines), nothing is written. Fix the cause or discard the run; do not edit
 `capture.json` to get past it.
-
-To feed several runs, `cargo run -p athena-capture -- watch .wright/runs` ingests each
-finished log as it lands. Use `ingest` when you need the exact verdict of one run.
 
 Repeat steps 3 to 5 until `runs` is 3, or stop earlier if a run is a `mismatch` you must
 report. Fewer than three agreeing runs keep the result provisional.
