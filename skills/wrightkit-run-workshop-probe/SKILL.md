@@ -1,10 +1,10 @@
 ---
 name: wrightkit-run-workshop-probe
 description: >
-  Run one Workshop runtime-behavior probe from the `athena` repository and record
-  the result: validate the probe, hand the paste file to the user for the Overwatch
-  client, save the returned Inspector text as a verbatim capture, judge it against
-  the verdict table, and write `capture.json`.
+  Run one Workshop runtime-behavior probe from the `athena` repository in the real
+  Overwatch client and record the result: validate the probe, run it in the client
+  (by computer use, or by the user), ingest the Inspector log with `athena ingest`,
+  and report the verdict.
   Use when the task is to run, re-run, repeat, or record a probe, to
   judge a pasted Inspector log, or to find which probe still needs runs.
   Also use when the user pastes an Inspector log with probe lines such as `P0 ...`, or
@@ -15,24 +15,27 @@ description: >
 
 # Run a Workshop probe
 
-One probe, one session. The agent prepares the file and judges the result. Pasting into
-the client and copying the Inspector back is done by the user. Do not attempt to drive
-the game client yourself, and never state or imply a probe ran unless a capture exists.
+One probe, one session. Never state or imply a probe ran unless a capture exists.
+The agent that drives the client returns raw Inspector text. `athena ingest` judges it
+and writes the capture; the agent does not judge by eye and does not hand-write
+`capture.json`.
 
-All paths below are relative to the `athena` repository;
-work from that directory. The expected values and the `match` / `mismatch` /
-`inconclusive` conditions are in `docs/procedure.zh-CN.md` under "操作与判定". Read that
-table for the chosen probe. Do not restate or invent expected values in this skill or in
-the reply. The capture layout, `capture.json` shape, and result rules are in
-`docs/capture-convention.md`; `AGENTS.md` routes to both.
+All paths are relative to the `athena` repository; work from that directory. Expected
+values live only in `probes/<id>/expect.json`. The client set-up, per-probe set-up, and
+invalid-run rules are in `docs/procedure.zh-CN.md` under "Agent 执行". The capture layout and
+result rules are in `docs/capture-convention.md`. Do not restate or invent expected values.
 
 ## 1. Choose the probe
 
-If the user named one, use it. Otherwise list `probes/*/capture.json` and pick the
-probe with the fewest `runs` (fewer than 3), or one whose `probe_sha256` no longer
-matches. Report which one and why.
+If the user named one, use it. Otherwise list `probes/*/capture.json`. Pick, in order:
+a probe whose `probe_sha256` no longer matches (stale), then the probe with the fewest
+`runs`. Skip a probe that already has `runs: 3` and a final result. Do not re-run a
+`mismatch` to look for a different answer. Report which probe and why.
 
-## 2. Prepare and validate
+Run one probe at a time. Probes share global variable names, and only one agent may write
+to a probe's directory.
+
+## 2. Validate
 
 ```bash
 wright check --kind workshop probes/<id>/probe.workshop
@@ -43,75 +46,78 @@ shasum -a 256 probes/<id>/probe.zh-CN.ow
 ```
 
 Both checks must pass and the element counts must be equal. If not, stop and report.
-Note the SHA-256: it goes into `probe_sha256`.
+Read `probes/<id>/expect.json` for the `end` line and the expected line count.
 
-## 3. Hand over to the user
+## 3. Run in the client
 
-Tell the user, briefly:
+If the user pastes the log themselves, go to step 4. Otherwise drive the client by
+computer use. Request access to Overwatch first. Do not enter credentials, and do not sign
+in on the user's behalf; if the client needs a sign-in, stop and ask.
 
-1. Which file to paste: `probes/<id>/probe.zh-CN.ow` (the file path, not its content
-   unless they ask).
-2. The general steps from "通用步骤" in `docs/procedure.zh-CN.md` (Workshop mode, Inspector and
-   recording on, no Slow Motion, only this probe pasted, start the game, do not touch the
-   character).
-3. The probe's last log line to wait for, and any probe-specific setup (such as
-   spawning a hero), from the procedure table.
-4. To paste back the **whole** Inspector text, variable block included.
+Follow "Agent 执行" in `docs/procedure.zh-CN.md`:
 
-Then wait. Do not continue until the user sends the text.
+1. Put `probes/<id>/probe.zh-CN.ow` on the clipboard (`write_clipboard` with the file
+   content). Never edit it.
+2. In a new Custom Game in Workshop mode, clear existing rules, paste the probe, turn on
+   the Workshop Inspector and Inspector recording, and confirm Slow Motion is off.
+3. Apply the probe-specific set-up from the procedure doc (P5 and P7 need the host to
+   pick a hero and spawn; every other probe needs no input and the character must not be
+   touched).
+4. Start the game and watch the Inspector until the probe's `end` line appears.
+5. Get the log text out (step 4). Leave the client in a state the next run can start from.
 
-## 4. Save the capture verbatim
+If a screen does not match the procedure (a dialog, a different language, a missing
+button), stop and report with a screenshot. Do not guess a click.
 
-Check the pasted text before saving:
+## 4. Get the log as a file
 
-- the variable block is present;
-- the probe's last log line is present, and the line count matches the procedure table;
-- any validity line the procedure table requires for this probe is present and valid.
+One run per file, with a different file name each time (`sources` de-duplicates by name).
+Save into `.wright/runs/` (ignored by Git), for example
+`.wright/runs/<id>-<n>.log`.
 
-If a check fails, say which one and ask for the text again, or mark the run invalid
-when the table says the run is void. Never repair, reformat, or complete
-the text.
+- Preferred: the Inspector log file the client writes. The procedure doc names where it
+  is once known. If you find it, report the path in the final report.
+- Fallback: select all in the Inspector, copy, read the clipboard, and save the text
+  unchanged. P6 also needs the variable block (see its entry in the procedure doc).
 
-Save it unchanged: `capture.txt` for run 1, `capture-2.txt` for run 2, `capture-3.txt`
-for run 3. Do not overwrite an earlier run.
+Check before ingesting: the `end` line is present once, and the line count matches. If the
+text is cut short, mixed with another probe, or starts before the probe's first line,
+discard the run and redo it. Never repair, reformat, or complete the text.
 
-## 5. Judge
+## 5. Ingest
 
-Compare the log with the expected values for this probe in `docs/procedure.zh-CN.md` and
-decide `match`, `mismatch`, or `inconclusive` by its conditions only. Quote the observed
-numbers next to the expected ones. Cross-check with the variable block (for example `i`,
-`runs`, `t0`) and report any disagreement instead of smoothing it over.
-
-With several runs: the result is final only when at least three runs agree. Fewer
-than three agreeing runs, or runs that disagree, keep the result provisional and say so.
-If runs disagree, do not pick one; report `inconclusive` with the differences.
-
-## 6. Write `capture.json`
-
-Update or create `probes/<id>/capture.json` with the existing shape:
-
-```json
-{
-  "probe": "<id>",
-  "client": { "version": "", "date": "YYYY-MM-DD", "locale": "zh-CN" },
-  "runs": 1,
-  "probe_sha256": "<from step 2>",
-  "hypothesis": "...",
-  "observed": [],
-  "result": "match | mismatch | inconclusive",
-  "notes": ""
-}
+```bash
+cargo run -p athena-capture -- ingest probes/<id> .wright/runs/<id>-<n>.log
 ```
 
-- Ask the user for the client version once if it is empty. Do not guess it.
-- `runs` is the number of saved captures that are valid for this `probe_sha256`.
-- `notes` states whether the result is provisional, anything the procedure table says the
-  probe cannot test, and
-  invalid runs.
-- Keep `observed` to what the capture shows, in milliseconds.
+`ingest` prints the verdict of the run and updates `capture.json` (`runs`, `result`,
+`notes`, `sources`) and the saved `capture*.txt`. If it rejects the log (no or several end
+lines, stale `probe_sha256`, `runs` out of step with the saved files, another probe's
+lines), nothing is written. Fix the cause or discard the run; do not edit
+`capture.json` to get past it.
+
+To feed several runs, `cargo run -p athena-capture -- watch .wright/runs` ingests each
+finished log as it lands. Use `ingest` when you need the exact verdict of one run.
+
+Repeat steps 3 to 5 until `runs` is 3, or stop earlier if a run is a `mismatch` you must
+report. Fewer than three agreeing runs keep the result provisional.
+
+## 6. Fill the human fields
+
+`ingest` does not set `client`, `hypothesis`, or `observed`. Fill them:
+
+- `client.version`: read it from the client options menu. Do not guess it. `date` is the
+  run date.
+- `observed`: only what the capture shows, in milliseconds.
+- `notes`: human text for what the probe cannot test, and invalid runs. Keep the
+  trailing `[ingest: …]` marker that `ingest` owns.
+- P6: confirm `endAbort` is `0` in the variable export, and say so in `notes`.
+
+Check with `cargo test -p athena-sim --test probe_hashes`.
 
 ## 7. Report
 
-Lead with the verdict and whether it is provisional. Then the observed values beside
-the expected ones, anything that disagreed, and what is still owed (remaining runs,
-client version). Do not commit unless the user asks.
+Lead with the verdict and whether it is provisional. Then the observed values beside the
+expected ones, anything that disagreed, and what is still owed (remaining runs, client
+version, where the Inspector log lives if it was unknown). Do not commit unless the user
+asks.

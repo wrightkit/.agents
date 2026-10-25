@@ -53,6 +53,6 @@ Project-agnostic:
 
 WrightKit-specific:
 
-- `wrightkit-run-workshop-probe`: run one Workshop runtime-behavior probe from the `athena` repository, with the user pasting into the client, then save the verbatim capture and judge it against the verdict table.
+- `wrightkit-run-workshop-probe`: run one Workshop runtime-behavior probe from the `athena` repository, in the real client (by the user or by computer use), then ingest the verbatim Inspector log with `athena ingest`, which judges it against the probe's `expect.json`.
 
 Keep skills focused on procedures. Stable organization policy belongs in `wrightkit/.github`; dynamic project state belongs in the owning repository, Issue, PR, CI run, release, or generated output.
