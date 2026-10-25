@@ -62,7 +62,7 @@ Follow "Agent 执行" in `docs/procedure.zh-CN.md`:
    desktop offers: clipboard sync, file transfer, or typing into Notepad. Check the pasted
    rule count against the file. Never edit the probe.
 2. In a new Custom Game in Workshop mode, clear existing rules, paste the probe, turn on
-   the Workshop Inspector and Inspector recording, and confirm Slow Motion is off.
+   the Workshop Inspector and Inspector recording, and make sure no rule calls `Set Slow Motion` (it is an action, not a toggle; the probes do not use it).
 3. Apply the probe-specific set-up from the procedure doc (P5 and P7 need the host to
    pick a hero and spawn; every other probe needs no input and the character must not be
    touched).
