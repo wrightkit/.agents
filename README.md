@@ -45,6 +45,7 @@ description: >
 
 Project-agnostic:
 
+- `orchestrate-issues`: drive ready Issues through implementer and independent reviewer sessions to a gated squash merge, then clean up.
 - `merged-pr-retro`: nightly or backfill review of merged PRs that extracts reusable failure classes and escalates two-PRs-in-three-days recurrence.
 - `reclaim-entropy`: post-hoc behavioral simplification and entropy reclamation.
 - `rust-engineering-review`: structural Rust engineering review, challenging proposed mechanisms against direct alternatives before evaluating Rust shape.
