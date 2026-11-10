@@ -53,6 +53,8 @@ Allow at most two review rounds. If round two still has findings, close the PR a
 
 ### 4. Merge
 
+Run `python3 -I .github/scripts/pr-gate.py <owner/repo> <pr>` to read these facts in one call, instead of repeated `gh pr view` and `gh pr checks` calls. Check the output against the list below. Use the Monitor tool to wait on a pending check, not a `sleep` loop.
+
 Merge only when all of these hold on the current head commit:
 
 - the independent reviewer's latest verdict is LGTM;
